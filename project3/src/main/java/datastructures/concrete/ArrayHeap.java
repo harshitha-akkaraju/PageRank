@@ -43,8 +43,15 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     
     //  ensure capacity
     
+    
     @Override
     public T removeMin() {
+    	// T temp = heap[1];
+    	// heap [1] = heap[heap[heapSize - 1]];
+    	// nodeValue = heap[2];
+    	// while (temp > nodeValue) {
+    	// 
+    	
         throw new NotYetImplementedException();
         //heapSize--;
     }
@@ -57,6 +64,7 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     @Override
     public void insert(T item) {
     	// 4*i, 4i + 1, 4*i + 2, 4*i + 3, 4*1 + 3 4*i + 4
+    	
         throw new NotYetImplementedException();
         //heapSize++;
     }
