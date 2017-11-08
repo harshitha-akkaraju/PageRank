@@ -10,18 +10,18 @@ import java.util.Arrays;
  * See IPriorityQueue for details on what each method must do.
  */
 public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
-    // See spec: you must implement a implement a 3-heap.
-    private static final int NUM_CHILDREN = 3;
+    // See spec: you must implement a implement a 4-heap.
+    private static final int NUM_CHILDREN = 4;
 
     // You MUST use this field to store the contents of your heap.
     // You may NOT rename this field: we will be inspecting it within
     // our private tests.
     private T[] heap;
-
     // Feel free to add more fields and constants.
-
-    public ArrayHeap() {
-        throw new NotYetImplementedException();
+    private int heapSize;
+    
+    public ArrayHeap(T[] heap) {
+    	this.heap = makeArrayOfT(17);
     }
 
     /**
@@ -40,23 +40,29 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
         return (T[]) (new Comparable[size]);
     }
 
+    
+    //  ensure capacity
+    
     @Override
     public T removeMin() {
         throw new NotYetImplementedException();
+        //heapSize--;
     }
 
     @Override
     public T peekMin() {
-        throw new NotYetImplementedException();
+    	return heap[1];
     }
 
     @Override
     public void insert(T item) {
+    	// 4*i, 4i + 1, 4*i + 2, 4*i + 3, 4*1 + 3 4*i + 4
         throw new NotYetImplementedException();
+        //heapSize++;
     }
 
     @Override
     public int size() {
-        throw new NotYetImplementedException();
+        return this.heapSize;
     }
 }
