@@ -19,6 +19,8 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     private T[] heap;
     // Feel free to add more fields and constants.
     private int heapSize;
+    private int index;
+    private int nodesAti;
     
     public ArrayHeap(T[] heap) {
     	this.heap = makeArrayOfT(17);
@@ -51,14 +53,22 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
 
     @Override
     public T peekMin() {
-    	return heap[1];
+    		return heap[0];
     }
 
     @Override
     public void insert(T item) {
     	// 4*i, 4i + 1, 4*i + 2, 4*i + 3, 4*1 + 3 4*i + 4
-        throw new NotYetImplementedException();
-        //heapSize++;
+    		if (this.heapSize == 0) {
+    			this.heap[0] = item;
+    		} else if (nodesAti > 4) { 
+    			this.nodesAti = 0;
+    			this.index++;
+    		} else {
+    			this.nodesAti++;
+    			this.heap[(4 * this.index + this.nodesAti)] = item;	
+    		}
+    		this.heapSize++;
     }
 
     @Override
