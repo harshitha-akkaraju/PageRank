@@ -45,15 +45,22 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     
     //  ensure capacity
     
+    
     @Override
     public T removeMin() {
+    	// T temp = heap[1];
+    	// heap [1] = heap[heap[heapSize - 1]];
+    	// nodeValue = heap[2];
+    	// while (temp > nodeValue) {
+    	// 
+    	
         throw new NotYetImplementedException();
         //heapSize--;
     }
 
     @Override
     public T peekMin() {
-    		return heap[0];
+    		return this.heap[0];
     }
 
     @Override
