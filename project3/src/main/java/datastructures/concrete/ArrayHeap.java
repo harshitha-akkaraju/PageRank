@@ -40,10 +40,6 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
         // works, and should not modify it in any way.
         return (T[]) (new Comparable[size]);
     }
-
-    
-    //  ensure capacity
-    
     
     @Override
     public T removeMin() {
@@ -86,15 +82,18 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     }
     
     private void percolateDown(int index) {
-    		if (4 * index < this.size) {
-    			// child indices
+    		int equation = 4 * index;
+    		if (equation < this.size) {
     			int[] indices = new int[4];
-    			int equation = 4 * index;
-    			int count = 0;
-    			while (equation < this.size && count < 4) {
-    				count++;
-    				indices[count - 1] = equation + count;
-    			}
+        		int count = 0; // will give the number of children at current node
+        		// child indices for 'index'
+        		for (int i = 0; i < 4; i++) {
+        			if (equation + 1 < this.size) {
+        				equation++;
+        				indices[i] = equation;
+        				count++;
+        			}
+        		}
         		int minIndex = index;
         		T minElement = this.heap[index];
         		// find the child with the smallest value
@@ -105,13 +104,19 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
         				minIndex = childIndex;
         			}
         		}
-        		// swap the values
+        		// swap with the smallest child
         		T temp = this.heap[index];
-        		this.heap[index] = minElement;
-        		this.heap[minIndex] = temp;
-        		percolateDown(minIndex);
+	    		this.heap[index] = minElement;
+	    		this.heap[minIndex] = temp;
+	    		percolateDown(minIndex);
     		}
     }
+    
+    // ensureCapacity
+    
+    
+    // downSize
+    
     
     // TODO: Delete Later
     public void print() {
