@@ -24,4 +24,13 @@ public class TestArrayHeapFunctionality extends BaseTest {
         heap.insert(3);
         assertEquals(1, heap.size());
     }
+    
+    // Write tests for
+    /*
+     * Inserting a null item
+     * Call remove on an empty heap
+     * Call peekMin on an empty heap
+     * Call size on an empty heap
+     * Stress test
+     * */
 }
