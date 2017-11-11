@@ -47,9 +47,13 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     			throw new EmptyContainerException();
 		}
     		T min = this.heap[0];
+//    		System.out.print("Before: ");
+//    		print();
     		this.heap[0] = this.heap[this.size - 1];
         this.size--;
         percolateDown(0);
+//        System.out.print("After: ");
+//        print();
         return min;
     }
 
@@ -108,7 +112,9 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
         		T temp = this.heap[index];
 	    		this.heap[index] = minElement;
 	    		this.heap[minIndex] = temp;
-	    		percolateDown(minIndex);
+	    		if (minIndex != index) {
+	    			percolateDown(minIndex);
+	    		}
     		}
     }
     
