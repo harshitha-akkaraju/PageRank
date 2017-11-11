@@ -50,7 +50,11 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     		if (this.size == 0) {
     			throw new EmptyContainerException();
 		}
+    		T min = this.heap[0];
+    		this.heap[0] = this.heap[this.size - 1];
         this.size--;
+        percolateDown(0);
+        return min;
     }
 
     @Override
@@ -73,14 +77,52 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     
     private void percolateUp(int index) {
     		int parentIndex = (index - 1) / 4;
-    		if (this.heap[index].compareTo(this.heap[parentIndex]) < 0) {
+    		if (index > 0 && this.heap[index].compareTo(this.heap[parentIndex]) < 0) {
     			T temp = this.heap[parentIndex];
     			this.heap[parentIndex] = this.heap[index];
     			this.heap[index] = temp;
+    			percolateUp(parentIndex);
     		}
-    		percolateUp(parentIndex);
     }
-
+    
+    private void percolateDown(int index) {
+    		if (4 * index < this.size) {
+    			// child indices
+    			int[] indices = new int[4];
+    			int equation = 4 * index;
+    			int count = 0;
+    			while (equation < this.size && count < 4) {
+    				count++;
+    				indices[count - 1] = equation + count;
+    			}
+        		int minIndex = index;
+        		T minElement = this.heap[index];
+        		// find the child with the smallest value
+        		for (int i = 0; i < count; i++) {
+        			int childIndex = indices[i];
+        			if (minElement.compareTo(this.heap[childIndex]) > 0) {
+        				minElement = this.heap[childIndex];
+        				minIndex = childIndex;
+        			}
+        		}
+        		// swap the values
+        		T temp = this.heap[index];
+        		this.heap[index] = minElement;
+        		this.heap[minIndex] = temp;
+        		percolateDown(minIndex);
+    		}
+    }
+    
+    // TODO: Delete Later
+    public void print() {
+    		System.out.print("[" + this.heap[0]);
+    		for (int i = 1; i < this.size; i++) {
+    			System.out.print(", " + this.heap[i]);
+    		}
+    		System.out.print("]");
+    		System.out.println();
+    }
+    
     @Override
     public int size() {
         return this.size;
