@@ -49,8 +49,12 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     		T min = this.heap[0];
     		this.heap[0] = this.heap[this.size - 1];
         this.size--;
+<<<<<<< HEAD
+        return this.heap[0];
+=======
         percolateDown(0);
         return min;
+>>>>>>> c51efa37ba8ac2800b4857ad0ab6518feb23e08f
     }
 
     @Override
