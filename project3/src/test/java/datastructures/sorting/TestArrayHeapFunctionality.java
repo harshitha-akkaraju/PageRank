@@ -51,6 +51,8 @@ public class TestArrayHeapFunctionality extends BaseTest {
 		// ArrayHeap<Integer> heap = new ArrayHeap();
 		int result = heap.removeMin();
 		assertEquals(1, result);
+		result = heap.removeMin();
+		assertEquals(1, result);
     }
     
     // Write tests for
