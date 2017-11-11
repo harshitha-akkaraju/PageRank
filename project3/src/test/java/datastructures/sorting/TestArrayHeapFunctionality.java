@@ -26,11 +26,62 @@ public class TestArrayHeapFunctionality extends BaseTest {
     }
     
     // Write tests for
-    /*
-     * Inserting a null item
-     * Call remove on an empty heap
-     * Call peekMin on an empty heap
-     * Call size on an empty heap
-     * Stress test
-     * */
+    // insert and remove
+    
+    //  trying to insert null
+    @Test(timeout=SECOND)
+    public void insertNull() {
+        IPriorityQueue<Integer> heap = this.makeInstance();
+        try {
+        heap.insert(null);
+        } catch (IllegalArgumentException e) {
+        	
+        }
+    }
+    
+    //  trying to remove from an empty heap
+    @Test(timeout=SECOND)
+    public void removeEmptyHeap() {
+        IPriorityQueue<Integer> heap = this.makeInstance();
+        try {
+        heap.removeMin();
+        } catch (EmptyContainerException e) {
+        	
+        }
+    }
+    
+    
+    //  trying to peek on an empty heap
+    @Test(timeout=SECOND)
+    public void peekEmptyHeap() {
+        IPriorityQueue<Integer> heap = this.makeInstance();
+        try {
+        heap.peekMin();
+        } catch (EmptyContainerException e) {
+        	
+        }
+    }
+    
+    //  trying to call size on an empty heap
+    @Test(timeout=SECOND)
+    public void sizeEmptyHeap() {
+        IPriorityQueue<Integer> heap = this.makeInstance();
+        try {
+        heap.size();
+        } catch (EmptyContainerException e) {
+        	
+        }
+    }
+    
+    //  stress test
+    @Test(timeout=10*SECOND)
+    public void stressTest() {
+        IPriorityQueue<Integer> heap = this.makeInstance();
+        for (int i = 0; i < 500; i++) {
+        	heap.insert(i + 3);
+        	heap.insert(i * 2);
+        }
+    }
+    
+    
 }
