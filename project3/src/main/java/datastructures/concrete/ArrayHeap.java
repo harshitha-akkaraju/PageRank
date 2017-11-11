@@ -51,6 +51,7 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     			throw new EmptyContainerException();
 		}
         this.size--;
+        return this.heap[0];
     }
 
     @Override
