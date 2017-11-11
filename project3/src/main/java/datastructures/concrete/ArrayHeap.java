@@ -18,9 +18,7 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     // our private tests.
     private T[] heap;
     // Feel free to add more fields and constants.
-    private int heapSize;
-    private int index;
-    private int nodesAti;
+    private int size;
     
     public ArrayHeap(T[] heap) {
     	this.heap = makeArrayOfT(17);
@@ -48,38 +46,42 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     
     @Override
     public T removeMin() {
-    	// T temp = heap[1];
-    	// heap [1] = heap[heap[heapSize - 1]];
-    	// nodeValue = heap[2];
-    	// while (temp > nodeValue) {
-    	// 
-    	
-        throw new NotYetImplementedException();
-        //heapSize--;
+    		if (this.size == 0) {
+    			throw new EmptyContainerException();
+		}
+        this.size--;
     }
 
     @Override
     public T peekMin() {
+    		if (this.size == 0) {
+    			throw new EmptyContainerException();
+    		}
     		return this.heap[0];
     }
 
     @Override
     public void insert(T item) {
-    	// 4*i, 4i + 1, 4*i + 2, 4*i + 3, 4*1 + 3 4*i + 4
-    		if (this.heapSize == 0) {
-    			this.heap[0] = item;
-    		} else if (nodesAti > 4) { 
-    			this.nodesAti = 0;
-    			this.index++;
-    		} else {
-    			this.nodesAti++;
-    			this.heap[(4 * this.index + this.nodesAti)] = item;	
+    		if (item == null) {
+    			throw new IllegalArgumentException();
     		}
-    		this.heapSize++;
+    		this.heap[this.size] = item;
+    		percolateUp(this.size);
+    		this.size++;
+    }
+    
+    private void percolateUp(int index) {
+    		int parentIndex = (index - 1) / 4;
+    		if (this.heap[index].compareTo(this.heap[parentIndex]) < 0) {
+    			T temp = this.heap[parentIndex];
+    			this.heap[parentIndex] = this.heap[index];
+    			this.heap[index] = temp;
+    		}
+    		percolateUp(parentIndex);
     }
 
     @Override
     public int size() {
-        return this.heapSize;
+        return this.size;
     }
 }
