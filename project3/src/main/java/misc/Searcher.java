@@ -32,6 +32,7 @@ public class Searcher {
 			heap.insert(input.get(i));
 		}
 		// the root of the heap is the kth largest element (smallest element)
+		// by the end of this loop, the heap only has the top k elements
 		for (int i = k; i < input.size(); i++) {
 			T element = input.get(i);
 			T heapMin = heap.peekMin();
@@ -43,8 +44,8 @@ public class Searcher {
 				heap.insert(element);
 			}
 		}
-		// by the end of this loop, the heap only has the top k elements
 		IList<T> result = new DoubleLinkedList<T>();
+		// empty the heap
 		for (int i = 0; i < k; i++) {
 			result.add(heap.removeMin());
 		}
