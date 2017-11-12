@@ -22,7 +22,7 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     private int size;
     
     public ArrayHeap() {
-    		this.heap = makeArrayOfT(17);
+    		this.heap = makeArrayOfT(10);
     }
 
     /**
@@ -47,13 +47,9 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     			throw new EmptyContainerException();
 		}
     		T min = this.heap[0];
-//    		System.out.print("Before: ");
-//    		print();
     		this.heap[0] = this.heap[this.size - 1];
         this.size--;
         percolateDown(0);
-//        System.out.print("After: ");
-//        print();
         return min;
     }
 
@@ -69,6 +65,9 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     public void insert(T item) {
     		if (item == null) {
     			throw new IllegalArgumentException();
+    		}
+    		if (this.size == this.heap.length) {
+    			ensureCapacity();
     		}
     		this.heap[this.size] = item;
     		percolateUp(this.size);
@@ -119,10 +118,16 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     }
     
     // ensureCapacity
+    private void ensureCapacity() {
+    		int newSize = this.size * 2;
+    		T[] temp = makeArrayOfT(newSize);
+    		for (int i = 0; i < this.size; i++) {
+    			temp[i] = this.heap[i];
+    		}
+    		this.heap = temp;
+    }
     
-    
-    // downSize
-    
+    // downSize??
     
     // TODO: Delete Later
     public void print() {
