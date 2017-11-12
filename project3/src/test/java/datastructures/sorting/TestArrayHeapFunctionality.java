@@ -21,6 +21,7 @@ public class TestArrayHeapFunctionality extends BaseTest {
         return new ArrayHeap<>();
     }
     
+    // Make a basic heap
     protected IPriorityQueue<Integer> makeBasicHeap() {
     		IPriorityQueue<Integer> heap = this.makeInstance();
     		heap.insert(2);
@@ -33,7 +34,8 @@ public class TestArrayHeapFunctionality extends BaseTest {
     		heap.insert(2);
         return heap;
     }
-      
+    
+    // Test the size of the heap
     @Test(timeout=SECOND)
     public void testBasicSize() {
         IPriorityQueue<Integer> heap = this.makeInstance();
@@ -41,6 +43,7 @@ public class TestArrayHeapFunctionality extends BaseTest {
         assertEquals(1, heap.size());
     }
     
+    // Empty the heap 
     @Test(timeout=SECOND)
     public void testAddAndRemoveBasic() {
     		IPriorityQueue<Integer> heap = this.makeBasicHeap();
@@ -49,10 +52,10 @@ public class TestArrayHeapFunctionality extends BaseTest {
     		for (int i = 0; i < actual.length; i++) {
     			actual[i] = heap.removeMin();
     		}
-    		System.out.println(Arrays.toString(actual));
     		assertTrue(matches(expected, actual));
     }
     
+    // Tests if the expected out matches the actual output
     private boolean matches(int[] expected, int[] actual) {
     		assertEquals(expected.length, actual.length);
     		boolean matches = true;
@@ -62,12 +65,14 @@ public class TestArrayHeapFunctionality extends BaseTest {
     		return matches;
     } 
     
+    // Make a heap with repeated values
     @Test(timeout=SECOND)
     public void testInsertBasic() {
     		IPriorityQueue<Integer> heap = this.makeBasicHeap();
     		assertEquals(8, heap.size());
     }
     
+    // Test two consecutive removes
     @Test(timeout=SECOND)
     public void testRemoveBasic() {
 		IPriorityQueue<Integer> heap = this.makeBasicHeap();
@@ -77,42 +82,42 @@ public class TestArrayHeapFunctionality extends BaseTest {
 		assertEquals(1, result);
     }
         
-    //  trying to insert null
+    //  Test inserting a null value into the heap
     @Test(timeout=SECOND)
-    public void insertNull() {
+    public void testNullInsertErrorHandling() {
         IPriorityQueue<Integer> heap = this.makeInstance();
         try {
-        heap.insert(null);
+        		heap.insert(null);
         } catch (IllegalArgumentException e) {
-        	
+        		System.out.println("You attempted to insert a null value into the heap.");
         }
     }
     
-    //  trying to remove from an empty heap
+    // Test removing from an empty heap
     @Test(timeout=SECOND)
-    public void removeEmptyHeap() {
+    public void testEmptyHeapErrorHandling() {
         IPriorityQueue<Integer> heap = this.makeInstance();
         try {
-        heap.removeMin();
+        		heap.removeMin();
         } catch (EmptyContainerException e) {
-        	
+        		System.out.println("Cannot call removeMin(), the heap is empty.");
         }
     }
         
-    //  trying to peek on an empty heap
+    //  Test peekMin() on an empty heap
     @Test(timeout=SECOND)
-    public void peekEmptyHeap() {
+    public void testPeekMinErrorHandling() {
         IPriorityQueue<Integer> heap = this.makeInstance();
         try {
-        heap.peekMin();
+        		heap.peekMin();
         } catch (EmptyContainerException e) {
         	
         }
     }
     
-    //  trying to call size on an empty heap
+    //  Test .size() on an empty heap
     @Test(timeout=SECOND)
-    public void sizeEmptyHeap() {
+    public void testSizeErrorHandling() {
         IPriorityQueue<Integer> heap = this.makeInstance();
         try {
         heap.size();
@@ -121,26 +126,55 @@ public class TestArrayHeapFunctionality extends BaseTest {
         }
     }
     
-    //  stress test
+    //  Insert and remove a large amount of data and compare with expected out 
     @Test(timeout=10*SECOND)
     public void stressTest() {
         IPriorityQueue<Integer> heap = this.makeInstance();
-        for (int i = 0; i < 500; i++) {
-        	heap.insert(i + 3);
-        	heap.insert(i * 2);
+        int[] expected = new int[1000000];
+        for (int i = 0; i < 1000000; i++) {
+	        	heap.insert(i);
+	        	expected[i] = i;
         }
-        for (int i = 0; i < 100; i ++) {
-        	heap.removeMin();
+        Arrays.sort(expected);
+        for (int i = 0; i < 1000000; i++) {
+        		int heapMin = heap.removeMin();
+        		assertTrue(heapMin == expected[i]);
         }
     }
     
-    //  add and remove the min multiple times
+    // Test worst case for building a heap (when elements are in reverse sorted order)
+    @Test(timeout=10*SECOND)
+    public void testBuildHeapWorstCase() {
+    		IPriorityQueue<Integer> heap = this.makeInstance();
+    		int[] expected = new int[10000000];
+    		for (int i = 10000000 - 1; i >= 0; i--) {
+    			heap.insert(i);
+    			expected[i] = i;
+    		}
+    		Arrays.sort(expected);
+    		for (int i = 0; i < expected.length; i++) {
+    			assertTrue(expected[i] == heap.removeMin());
+    		}
+    }
+    
+    //  Test adding repeated values
+    @Test(timeout=SECOND)
     public void addRemoveSame() {
 		IPriorityQueue<Integer> heap = this.makeBasicHeap();
-		for (int i = 0; i < 10; i++)
-		heap.insert(0);
-		assertTrue(heap.peekMin() == 0);
-		assertTrue(heap.removeMin() == 0);	
+		int[] expected = new int[10];
+		for (int i = 0; i < 10; i++) {
+			if (i % 2 == 0) {
+				heap.insert(0);
+				expected[i] = 0;
+			} else {
+				heap.insert(1);
+				expected[i] = 1;
+			}
+		}
+		Arrays.sort(expected);
+		for (int i = 0; i < 10; i++) {
+			assertTrue(expected[i] == heap.removeMin());
+		}
     }
     
     //  multi call test
@@ -166,9 +200,9 @@ public class TestArrayHeapFunctionality extends BaseTest {
 		
 		try {
 			heap.insert(null);
-			} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 				
-			}
+		}
     }
     
     
