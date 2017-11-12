@@ -33,10 +33,7 @@ public class TestArrayHeapFunctionality extends BaseTest {
     		heap.insert(2);
         return heap;
     }
-    
- //  add remove many
- 
-    
+      
     @Test(timeout=SECOND)
     public void testBasicSize() {
         IPriorityQueue<Integer> heap = this.makeInstance();
@@ -136,6 +133,44 @@ public class TestArrayHeapFunctionality extends BaseTest {
         	heap.removeMin();
         }
     }
+    
+    //  add and remove the min multiple times
+    public void addRemoveSame() {
+		IPriorityQueue<Integer> heap = this.makeBasicHeap();
+		for (int i = 0; i < 10; i++)
+		heap.insert(0);
+		assertTrue(heap.peekMin() == 0);
+		assertTrue(heap.removeMin() == 0);	
+    }
+    
+    //  multi call test
+    @Test(timeout=SECOND)
+    public void longMultiCallTest() {
+		IPriorityQueue<Integer> heap = this.makeBasicHeap();
+		assertTrue(heap.size() == 8);
+		heap.removeMin();
+		assertTrue(heap.size() == 7);
+		heap.removeMin();
+		assertTrue(heap.peekMin() == 2);
+		heap.insert(25);
+		heap.insert(12);
+		heap.insert(6);
+		
+		int[] expected = {2, 2, 2, 5, 6, 6, 9, 12, 25};
+		int[] actual = new int[heap.size()];
+		for (int i = 0; i < actual.length; i++) {
+			actual[i] = heap.removeMin();
+		}
+		System.out.println(Arrays.toString(actual));
+		assertTrue(matches(expected, actual));
+		
+		try {
+			heap.insert(null);
+			} catch (IllegalArgumentException e) {
+				
+			}
+    }
+    
     
     
 }
