@@ -27,17 +27,17 @@ public class Searcher {
 			return new DoubleLinkedList<T>();
 		}
 		IPriorityQueue<T> heap = new ArrayHeap<T>();
-		// insert the first k elements into the heap
+		// insert first k elements into the heap
 		for (int i = 0; i < k; i++) {
 			heap.insert(input.get(i));
 		}
-		// the root of the heap is the kth largest element (smallest element)
+		// the root of the heap is the kth largest element so far (smallest element)
 		// by the end of this loop, the heap only has the top k elements
 		for (int i = k; i < input.size(); i++) {
 			T element = input.get(i);
 			T heapMin = heap.peekMin();
 			// check if the new element is larger
-			// if it is, it should be the new kth largest element
+			// if it is, it should be the new kth largest element (aka smallest element)
 			if (element.compareTo(heapMin) > 0) {
 				heap.removeMin();
 				// replace the min with a 'larger' element
