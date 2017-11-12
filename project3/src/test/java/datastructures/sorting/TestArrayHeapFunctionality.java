@@ -15,6 +15,7 @@ import org.junit.Test;
 /**
  * See spec for details on what kinds of tests this class should include.
  */
+
 public class TestArrayHeapFunctionality extends BaseTest {
     protected <T extends Comparable<T>> IPriorityQueue<T> makeInstance() {
         return new ArrayHeap<>();
@@ -32,6 +33,9 @@ public class TestArrayHeapFunctionality extends BaseTest {
     		heap.insert(2);
         return heap;
     }
+    
+ //  add remove many
+ 
     
     @Test(timeout=SECOND)
     public void testBasicSize() {
@@ -59,7 +63,7 @@ public class TestArrayHeapFunctionality extends BaseTest {
     			matches = expected[i] == actual[i];
     		}
     		return matches;
-    }
+    } 
     
     @Test(timeout=SECOND)
     public void testInsertBasic() {
@@ -67,19 +71,15 @@ public class TestArrayHeapFunctionality extends BaseTest {
     		assertEquals(8, heap.size());
     }
     
-    // @Test(timeout=SECOND)
+    @Test(timeout=SECOND)
     public void testRemoveBasic() {
 		IPriorityQueue<Integer> heap = this.makeBasicHeap();
-		// ArrayHeap<Integer> heap = new ArrayHeap();
 		int result = heap.removeMin();
 		assertEquals(1, result);
 		result = heap.removeMin();
 		assertEquals(1, result);
     }
-    
-    // Write tests for
-    // insert and remove
-    
+        
     //  trying to insert null
     @Test(timeout=SECOND)
     public void insertNull() {
@@ -101,8 +101,7 @@ public class TestArrayHeapFunctionality extends BaseTest {
         	
         }
     }
-    
-    
+        
     //  trying to peek on an empty heap
     @Test(timeout=SECOND)
     public void peekEmptyHeap() {
@@ -132,6 +131,9 @@ public class TestArrayHeapFunctionality extends BaseTest {
         for (int i = 0; i < 500; i++) {
         	heap.insert(i + 3);
         	heap.insert(i * 2);
+        }
+        for (int i = 0; i < 100; i ++) {
+        	heap.removeMin();
         }
     }
     
