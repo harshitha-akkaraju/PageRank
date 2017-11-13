@@ -35,7 +35,7 @@ public class TestSortingStress extends BaseTest {
 }
 	
 
-    // ARRAYHEAP BIGGER TESTS
+    // ARRAYHEAP STRESS TESTS
     // Test worst case for building a heap (when elements are in reverse sorted order)
     @Test(timeout=10*SECOND)
     public void testBuildHeapWorstCase() {
@@ -53,7 +53,7 @@ public class TestSortingStress extends BaseTest {
     
     //  Insert and remove a large amount of data and compare with expected out 
     @Test(timeout=10*SECOND)
-    public void stressTest() {
+    public void heapStressTest() {
         IPriorityQueue<Integer> heap = this.makeInstance();
         int[] expected = new int[1000000];
         for (int i = 0; i < 1000000; i++) {
@@ -68,16 +68,16 @@ public class TestSortingStress extends BaseTest {
     }
 	
     
-    //  SORTING TESTS
-    @Test(timeout=10*SECOND)
-    public void largeDataset() {
-    	int[] heap = new int[1000];
-    	for (int i = 0; i < 500; i++) {
-    		heap.(i + 10 - i *20);
-    	}
-    	int[]expected = new int[1000];
-    	expected = Arrays.sort(heap);;
-
-        assertTrue(true);
-    }
+    //  SORTING STRESS TESTS
+//    @Test(timeout=10*SECOND)
+//    public void largeDataset() {
+//    	int[] heap = new int[1000];
+//    	for (int i = 0; i < 500; i++) {
+//    		heap.(i + 10 - i *20);
+//    	}
+//    	int[]expected = new int[1000];
+//    	expected = Arrays.sort(heap);;
+//
+//        assertTrue(true);
+//    }
 }

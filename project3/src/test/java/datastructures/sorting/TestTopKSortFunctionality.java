@@ -23,24 +23,8 @@ import misc.exceptions.EmptyContainerException;
 
 
 public class TestTopKSortFunctionality extends BaseTest {
-	protected <T extends Comparable<T>> IPriorityQueue<T> makeInstance() {
-        return new ArrayHeap<>();
-    }
     
-//  Make basic heap
-	protected IPriorityQueue<Integer> makeBasicHeap() {
-		IPriorityQueue<Integer> heap = this.makeInstance();
-		heap.insert(2);
-		heap.insert(5);
-		heap.insert(1);
-		heap.insert(6);
-		heap.insert(1);
-		heap.insert(2);
-		heap.insert(9);
-		heap.insert(2);
-	return heap;
-	}
-	
+	//  Tests simple usage
 	@Test(timeout=SECOND)
     public void testSimpleUsage() {
         IList<Integer> list = new DoubleLinkedList<>();
@@ -55,17 +39,38 @@ public class TestTopKSortFunctionality extends BaseTest {
         }
     }
     
-    // TODO
+    //  Tests Strings
     @Test(timeout=SECOND)
     public void testStrings() {
-    	
+    	IList<String> list = new DoubleLinkedList<>();
+    	String alphabetTop10 = "qrstuvwxyz";
+    	String alphabetReverse = "zyxwvutsrqpomnlkjihgfedcba";
+        
+    	for (int i = 0; i < 26; i++) {
+    		list.add(alphabetReverse.charAt(i) + "");
+    	}
+
+        IList<String> top = Searcher.topKSort(10, list);
+        assertEquals(10, top.size());
+        for (int i = 0; i < top.size(); i++) {
+            assertEquals(alphabetTop10.charAt(i) + "", top.get(i));
+        }
     }
     
-    // TODO
+    //  Tests Doubles
     @Test(timeout=SECOND)
     public void testDoubles() {
-    	
-    }
+    	IList<Double> list = new DoubleLinkedList<>();
+        for (int i = 0; i < 20; i++) {
+            list.add(i * 1.0);
+        }
 
+        IList<Double> top = Searcher.topKSort(5, list);
+        assertEquals(5, top.size());
+        for (int i = 0; i < top.size(); i++) {
+            assertEquals(15 + i * 1.0, top.get(i));
+        }
+    }
+    
     
 }
