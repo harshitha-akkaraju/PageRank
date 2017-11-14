@@ -41,6 +41,15 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
         return (T[]) (new Comparable[size]);
     }
     
+    /**
+     * Removes and return the smallest element in the queue.
+     *
+     * If two elements within the queue are considered "equal"
+     * according to their compareTo method, this method may break
+     * the tie arbitrarily and return either one.
+     *
+     * @throws EmptyContainerException  if the queue is empty
+     */
     @Override
     public T removeMin() {
     		if (this.size == 0) {
@@ -50,9 +59,20 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     		this.heap[0] = this.heap[this.size - 1];
         this.size--;
         percolateDown(0);
+        if (this.size != 0 && this.heap.length / this.size <= 0.25) {
+        		downSize();
+        }
         return min;
     }
 
+    /**
+     * Returns, but does not remove, the smallest element in the queue.
+     *
+     * This method must break ties in the same way the removeMin
+     * method breaks ties.
+     *
+     * @throws EmptyContainerException  if the queue is empty
+     */
     @Override
     public T peekMin() {
     		if (this.size == 0) {
@@ -61,6 +81,11 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     		return this.heap[0];
     }
 
+    /**
+     * Inserts the given item into the queue.
+     *
+     * @throws IllegalArgumentException  if the item is null
+     */
     @Override
     public void insert(T item) {
     		if (item == null) {
@@ -74,6 +99,19 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     		this.size++;
     }
     
+    /**
+     * Returns the number of elements contained within this queue.
+     */
+    @Override
+    public int size() {
+        return this.size;
+    }
+    
+    /**
+     * Starts at the given index and recursively swaps the parent with the child if parent
+     * is greater than the child
+     * @param index
+     */
     private void percolateUp(int index) {
     		int parentIndex = (index - 1) / 4;
     		if (index > 0 && this.heap[index].compareTo(this.heap[parentIndex]) < 0) {
@@ -84,40 +122,36 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     		}
     }
     
+    /**
+     * Starts at the given index and replaces the parent with it's smallest child recursively
+     * down the tree
+     * @param index
+     */
     private void percolateDown(int index) {
-    		int equation = 4 * index;
-    		if (equation < this.size) {
-    			int[] indices = new int[4];
-        		int count = 0; // will give the number of children at current node
-        		// child indices for 'index'
-        		for (int i = 0; i < 4; i++) {
-        			if (equation + 1 < this.size) {
-        				equation++;
-        				indices[i] = equation;
-        				count++;
-        			}
-        		}
-        		int minIndex = index;
-        		T minElement = this.heap[index];
-        		// find the child with the smallest value
-        		for (int i = 0; i < count; i++) {
-        			int childIndex = indices[i];
-        			if (minElement.compareTo(this.heap[childIndex]) > 0) {
-        				minElement = this.heap[childIndex];
-        				minIndex = childIndex;
-        			}
-        		}
-        		// swap with the smallest child
-        		T temp = this.heap[index];
-	    		this.heap[index] = minElement;
-	    		this.heap[minIndex] = temp;
-	    		if (minIndex != index) {
-	    			percolateDown(minIndex);
-	    		}
+    		int childIndex = 4 * index;
+    		int minIndex = index;
+    		T minElement = this.heap[index];
+    		int count = 0;
+		while (childIndex < this.size && count < 4) {
+			childIndex++;
+			count++;
+			if (minElement.compareTo(this.heap[childIndex]) > 0) {
+				minElement = this.heap[childIndex];
+				minIndex = childIndex;
+			}
+		}
+    		// swap with the smallest child
+    		T temp = this.heap[index];
+    		this.heap[index] = minElement;
+    		this.heap[minIndex] = temp;
+    		if (minIndex != index) {
+    			percolateDown(minIndex);
     		}
     }
     
-    // ensureCapacity
+    /** Helper method
+     * If 'heap' is full, ensureCapacity doubles the size of heap so it can hold at least this.size elements.
+     */
     private void ensureCapacity() {
     		int newSize = this.size * 2;
     		T[] temp = makeArrayOfT(newSize);
@@ -127,7 +161,16 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     		this.heap = temp;
     }
     
-    // downSize??
+    /** Helper method
+     * If the heap is less than 25% full, the heap size is reduced by half
+     */
+    private void downSize() {
+		T [] temp = makeArrayOfT(this.heap.length / 2);
+		for (int i = 0; i < this.heap.length; i++) {
+			temp[i] = this.heap[i];
+		}
+		this.heap = temp;
+    }
     
     // TODO: Delete Later
     public void print() {
@@ -137,10 +180,5 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     		}
     		System.out.print("]");
     		System.out.println();
-    }
-    
-    @Override
-    public int size() {
-        return this.size;
     }
 }
