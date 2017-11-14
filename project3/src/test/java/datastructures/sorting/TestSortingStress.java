@@ -5,10 +5,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 import misc.BaseTest;
 import datastructures.concrete.ArrayHeap;
+import datastructures.concrete.DoubleLinkedList;
+import datastructures.interfaces.IList;
 import datastructures.interfaces.IPriorityQueue;
 import org.junit.Test;
 
@@ -71,12 +74,16 @@ public class TestSortingStress extends BaseTest {
     //  SORTING STRESS TESTS
     public void randomIntStressTest() {
     	Random r = new Random();
-    	IList<T> expected = new DoubleLinkedList<>;
-    	int[] actual = new int[10000]
-    			
+    	IList<Integer> expected = new DoubleLinkedList<Integer>();
+    	IList<Integer> actual = new DoubleLinkedList<Integer>();
     	for (int i = 0; i < 10000; i++) {
-    		int[]
+    		int rand = r.nextInt();
+    		expected.add(rand);
+    		actual.add(rand);
     	}
+    	
+    	//  The method sort(List<T>) in the type Collections is not applicable for the arguments (IList<Integer>)
+    	Collections.sort(expected);
     }
 
 }
