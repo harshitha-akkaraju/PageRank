@@ -10,12 +10,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
-import java.util.Arrays;
-
-import datastructures.concrete.ArrayHeap;
-import datastructures.interfaces.IPriorityQueue;
-import misc.exceptions.EmptyContainerException;
-
 /**
  * See spec for details on what kinds of tests this class should include.
  * 
@@ -38,7 +32,33 @@ public class TestTopKSortFunctionality extends BaseTest {
             assertEquals(15 + i, top.get(i));
         }
     }
+	
+	@Test(timeout=SECOND)
+    public void testLargerSet() {
+        IList<Integer> list = new DoubleLinkedList<>();
+        for (int i = 0; i < 100; i++) {
+            list.add(i);
+            list.add(i - 50);
+        }
+        IList<Integer> top = Searcher.topKSort(100, list);
+        assertEquals(100, top.size());
+    }
     
+	@Test(timeout=SECOND)
+	public void testReverseOrder() {
+    	IList<String> list = new DoubleLinkedList<>();
+    	String alphabet = "abcdefghijklmnopqrstuvwxyz";
+    	String alphabetReverse = "zyxwvutsrqpomnlkjihgfedcba";
+    	for (int i = 0; i < 26; i++) {
+    		list.add(alphabetReverse.charAt(i) + "");
+    	}
+        IList<String> top = Searcher.topKSort(26, list);
+        assertEquals(26, top.size());
+        for (int i = 0; i < top.size(); i++) {
+            assertEquals(alphabet.charAt(i) + "", top.get(i));
+        }
+	}
+	
     //  Tests Strings
     @Test(timeout=SECOND)
     public void testStrings() {

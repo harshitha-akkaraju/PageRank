@@ -89,7 +89,7 @@ public class TestArrayHeapFunctionality extends BaseTest {
         try {
         		heap.insert(null);
         } catch (IllegalArgumentException e) {
-        		System.out.println("You attempted to insert a null value into the heap.");
+        		System.out.println("Cannot insert a null value into the heap");
         }
     }
     
@@ -100,7 +100,7 @@ public class TestArrayHeapFunctionality extends BaseTest {
         try {
         		heap.removeMin();
         } catch (EmptyContainerException e) {
-        		System.out.println("Cannot call removeMin(), the heap is empty.");
+        		System.out.println("Cannot call removeMin(), the heap is empty");
         }
     }
         
@@ -122,7 +122,6 @@ public class TestArrayHeapFunctionality extends BaseTest {
         try {
         heap.size();
         } catch (EmptyContainerException e) {
-        	
         }
     }
         
