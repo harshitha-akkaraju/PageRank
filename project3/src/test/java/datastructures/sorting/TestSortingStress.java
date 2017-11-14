@@ -5,11 +5,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import misc.BaseTest;
 import datastructures.concrete.ArrayHeap;
 import datastructures.interfaces.IPriorityQueue;
-import misc.exceptions.EmptyContainerException;
 import org.junit.Test;
 
 /**
@@ -69,15 +69,14 @@ public class TestSortingStress extends BaseTest {
 	
     
     //  SORTING STRESS TESTS
-//    @Test(timeout=10*SECOND)
-//    public void largeDataset() {
-//    	int[] heap = new int[1000];
-//    	for (int i = 0; i < 500; i++) {
-//    		heap.(i + 10 - i *20);
-//    	}
-//    	int[]expected = new int[1000];
-//    	expected = Arrays.sort(heap);;
-//
-//        assertTrue(true);
-//    }
+    public void randomIntStressTest() {
+    	Random r = new Random();
+    	IList<T> expected = new DoubleLinkedList<>;
+    	int[] actual = new int[10000]
+    			
+    	for (int i = 0; i < 10000; i++) {
+    		int[]
+    	}
+    }
+
 }
