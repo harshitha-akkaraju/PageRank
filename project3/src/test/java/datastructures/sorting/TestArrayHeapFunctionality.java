@@ -164,7 +164,6 @@ public class TestArrayHeapFunctionality extends BaseTest {
 		for (int i = 0; i < actual.length; i++) {
 			actual[i] = heap.removeMin();
 		}
-		System.out.println(Arrays.toString(actual));
 		assertTrue(matches(expected, actual));
 		
 		try {
