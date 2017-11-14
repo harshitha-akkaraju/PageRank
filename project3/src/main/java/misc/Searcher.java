@@ -23,13 +23,15 @@ public class Searcher {
     public static <T extends Comparable<T>> IList<T> topKSort(int k, IList<T> input) {
     		if (k < 0) {
 			throw new IllegalArgumentException();
-		} else if (input.isEmpty()) {
+		} else if (input.isEmpty() || k == 0) {
 			return new DoubleLinkedList<T>();
 		}
 		IPriorityQueue<T> heap = new ArrayHeap<T>();
 		// insert first k elements into the heap
 		for (int i = 0; i < k; i++) {
-			heap.insert(input.get(i));
+			if (i < input.size()) {
+				heap.insert(input.get(i));
+			}
 		}
 		// the root of the heap is the kth largest element so far (smallest element)
 		// by the end of this loop, the heap only has the top k elements
