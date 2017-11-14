@@ -5,11 +5,9 @@
 
 package datastructures.concrete;
 
-import datastructures.concrete.dictionaries.ArrayDictionary;
 import datastructures.concrete.dictionaries.ChainedHashDictionary;
 import datastructures.interfaces.IDictionary;
 import datastructures.interfaces.ISet;
-import misc.exceptions.NotYetImplementedException;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -94,7 +92,7 @@ public class ChainedHashSet<T> implements ISet<T> {
          */
         @Override
         public T next() {
-        	return iter.next().getKey();
+        		return iter.next().getKey();
         }
     }
 }
