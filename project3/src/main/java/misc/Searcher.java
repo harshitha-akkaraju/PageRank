@@ -47,8 +47,9 @@ public class Searcher {
 			}
 		}
 		IList<T> result = new DoubleLinkedList<T>();
+		int count = Math.min(k, input.size()); // to handle when k > input.size
 		// empty the heap
-		for (int i = 0; i < k; i++) {
+		for (int i = 0; i < count; i++) {
 			result.add(heap.removeMin());
 		}
 		return result;
