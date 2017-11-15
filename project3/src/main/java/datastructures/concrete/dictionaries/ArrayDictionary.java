@@ -133,7 +133,7 @@ public class ArrayDictionary<K, V> implements IDictionary<K, V> {
     			while (this.size + 1 > newCapacity) {
     				newCapacity = (this.size + 1) * 2;
     			}
-    			Pair<K, V> [] temp = makeArrayOfPairs(newCapacity);
+    			Pair<K, V>[] temp = makeArrayOfPairs(newCapacity);
     			// Copy over the elements into the new array of pairs
     			for (int i = 0; i < this.size; i++) {
     				temp[i] = this.pairs[i];
@@ -149,7 +149,8 @@ public class ArrayDictionary<K, V> implements IDictionary<K, V> {
     		Pair<K, V> element;
     		for (int i = 0; i < this.size; i++) {
     			element = this.pairs[i];
-    			if (element != null && (element.key == key || (element.key != null && element.key.equals(key)))) {
+    			if (element != null && (element.key == key || (element.key != null && 
+    					element.key.equals(key)))) {
     				return i;
     			}
     		}
