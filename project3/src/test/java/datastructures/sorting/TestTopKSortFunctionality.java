@@ -18,6 +18,33 @@ import static org.junit.Assert.fail;
 
 public class TestTopKSortFunctionality extends BaseTest {
     
+	
+	//  Test k zero
+	@Test(timeout=SECOND)
+    public void testKEqualsZero() {
+        IList<Integer> list = new DoubleLinkedList<>();
+        for (int i = 0; i < 100; i++) {
+            list.add(i);
+        }
+        IList<Integer> top = Searcher.topKSort(0, list);
+        assertEquals(0, top.size());
+
+    }
+	
+	// test k greater than size
+	@Test(timeout=SECOND)
+    public void testKGreaterThanSize() {
+        IList<Integer> list = new DoubleLinkedList<>();
+        for (int i = 0; i < 20; i++) {
+            list.add(i);
+        }
+        IList<Integer> top = Searcher.topKSort(50, list);
+        assertEquals(20, top.size());
+//        for (int i = 0; i < top.size(); i++) {
+//            assertEquals(, top.get(i));
+//        }
+    }	
+	
 	//  Tests simple usage
 	@Test(timeout=SECOND)
     public void testSimpleUsage() {
