@@ -69,7 +69,6 @@ public class TestSortingStress extends BaseTest {
         		assertTrue(heapMin == expected[i]);
         }
     }
-	
     
     //  SORTING STRESS TESTS
     public void randomIntStressTest() {
@@ -83,7 +82,7 @@ public class TestSortingStress extends BaseTest {
     	}
     	
     	//  The method sort(List<T>) in the type Collections is not applicable for the arguments (IList<Integer>)
-    	Collections.sort(expected);
+    	// Collections.sort(expected);
     }
 
 }
