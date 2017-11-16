@@ -31,16 +31,11 @@ public class Searcher {
 		IPriorityQueue<T> heap = new ArrayHeap<T>();
 		Iterator<T> itr = input.iterator();
 		int count = 0;
+		// insert first k elements into the heap
 		while (count < k && itr.hasNext()) {
 			heap.insert(itr.next());
 			count++;
 		}
-//		// insert first k elements into the heap
-//		for (int i = 0; i < k; i++) {
-//			if (i < input.size()) {
-//				heap.insert(input.get(i));
-//			}
-//		}
 		//  the root of the heap is the kth largest element so far (smallest element)
 		//  by the end of this loop, the heap only has the top k elements
 		for (int i = k; i < input.size(); i++) {
