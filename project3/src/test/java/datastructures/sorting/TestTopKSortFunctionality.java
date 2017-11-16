@@ -10,6 +10,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * See spec for details on what kinds of tests this class should include.
  * 
@@ -31,7 +34,7 @@ public class TestTopKSortFunctionality extends BaseTest {
 
     }
 	
-	// test k greater than size
+	// When k > size
 	@Test(timeout=SECOND)
     public void testKGreaterThanSize() {
         IList<Integer> list = new DoubleLinkedList<>();
@@ -40,12 +43,12 @@ public class TestTopKSortFunctionality extends BaseTest {
         }
         IList<Integer> top = Searcher.topKSort(50, list);
         assertEquals(20, top.size());
-//        for (int i = 0; i < top.size(); i++) {
-//            assertEquals(, top.get(i));
-//        }
+        for (int i = 0; i < top.size(); i++) {
+            assertEquals(i, top.get(i));
+        }
     }	
 	
-	//  Tests simple usage
+	//  Simple usage
 	@Test(timeout=SECOND)
     public void testSimpleUsage() {
         IList<Integer> list = new DoubleLinkedList<>();
@@ -73,12 +76,12 @@ public class TestTopKSortFunctionality extends BaseTest {
     
 	@Test(timeout=SECOND)
 	public void testReverseOrder() {
-    	IList<String> list = new DoubleLinkedList<>();
-    	String alphabet = "abcdefghijklmnopqrstuvwxyz";
-    	String alphabetReverse = "zyxwvutsrqpomnlkjihgfedcba";
-    	for (int i = 0; i < 26; i++) {
-    		list.add(alphabetReverse.charAt(i) + "");
-    	}
+	    	IList<String> list = new DoubleLinkedList<>();
+	    	String alphabet = "abcdefghijklmnopqrstuvwxyz";
+	    	String alphabetReverse = "zyxwvutsrqpomnlkjihgfedcba";
+	    	for (int i = 0; i < 26; i++) {
+	    		list.add(alphabetReverse.charAt(i) + "");
+	    	}
         IList<String> top = Searcher.topKSort(26, list);
         assertEquals(26, top.size());
         for (int i = 0; i < top.size(); i++) {
