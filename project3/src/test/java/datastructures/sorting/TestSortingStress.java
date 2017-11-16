@@ -80,14 +80,14 @@ public class TestSortingStress extends BaseTest {
     	Random r = new Random();
     	List<Integer> expected = new LinkedList<Integer>();
     	IList<Integer> actual = new DoubleLinkedList<Integer>();
-    	for (int i = 0; i < 100; i++) {
+    	for (int i = 0; i < 10; i++) {
     		int rand = r.nextInt(11);
     		expected.add(rand);
     		actual.add(rand);
     	}
     	Collections.sort(expected); 
-    	Searcher.topKSort(100, actual);
-    	for (int i = 0; i < 100; i++) {
+    	actual = Searcher.topKSort(10, actual); 	
+    	for (int i = 0; i < 1; i++) {
     		assertEquals(expected.get(i), (actual.get(i)));
     	}
     }
