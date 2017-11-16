@@ -75,20 +75,21 @@ public class TestSortingStress extends BaseTest {
 	
     
     //  SORTING STRESS TESTS
+    @Test(timeout=10*SECOND)
     public void randomIntStressTest() {
     	Random r = new Random();
-    	IList<Integer> expected = new DoubleLinkedList<Integer>();
+    	List<Integer> expected = new LinkedList<Integer>();
     	IList<Integer> actual = new DoubleLinkedList<Integer>();
-    	for (int i = 0; i < 100000; i++) {
-    		int rand = r.nextInt();
+    	for (int i = 0; i < 100; i++) {
+    		int rand = r.nextInt(11);
     		expected.add(rand);
     		actual.add(rand);
     	}
-    	//  Collections.sort(expected); 
-    	// The method sort(List<T>) in the type Collections is not applicable for the arguments (IList<Integer>)
-
-    	Searcher.topKSort(100000, actual);
-    	assertTrue(expected.equals(actual));
+    	Collections.sort(expected); 
+    	Searcher.topKSort(100, actual);
+    	for (int i = 0; i < 100; i++) {
+    		assertEquals(expected.get(i), (actual.get(i)));
+    	}
     }
 
 }
