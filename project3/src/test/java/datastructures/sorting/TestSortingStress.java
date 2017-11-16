@@ -1,3 +1,9 @@
+/*
+ * Team Members
+ * Harshitha Akkaraju
+ * Shaarika Kaul
+ */
+
 package datastructures.sorting;
 
 import static org.junit.Assert.assertTrue;
