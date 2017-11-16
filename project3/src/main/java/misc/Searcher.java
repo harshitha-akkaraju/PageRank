@@ -27,6 +27,7 @@ public class Searcher {
 			return new DoubleLinkedList<T>();
 		}
 		IPriorityQueue<T> heap = new ArrayHeap<T>();
+		
 		// insert first k elements into the heap
 		for (int i = 0; i < k; i++) {
 			if (i < input.size()) {
