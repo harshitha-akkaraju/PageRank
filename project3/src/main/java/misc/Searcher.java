@@ -1,5 +1,7 @@
 package misc;
 
+import java.util.Iterator;
+
 import datastructures.concrete.ArrayHeap;
 import datastructures.concrete.DoubleLinkedList;
 import datastructures.interfaces.IList;
@@ -27,12 +29,18 @@ public class Searcher {
 			return new DoubleLinkedList<T>();
 		}
 		IPriorityQueue<T> heap = new ArrayHeap<T>();
-		// insert first k elements into the heap
-		for (int i = 0; i < k; i++) {
-			if (i < input.size()) {
-				heap.insert(input.get(i));
-			}
+		Iterator<T> itr = input.iterator();
+		int count = 0;
+		while (count < k && itr.hasNext()) {
+			heap.insert(itr.next());
+			count++;
 		}
+//		// insert first k elements into the heap
+//		for (int i = 0; i < k; i++) {
+//			if (i < input.size()) {
+//				heap.insert(input.get(i));
+//			}
+//		}
 		// the root of the heap is the kth largest element so far (smallest element)
 		// by the end of this loop, the heap only has the top k elements
 		for (int i = k; i < input.size(); i++) {
@@ -47,8 +55,9 @@ public class Searcher {
 			}
 		}
 		IList<T> result = new DoubleLinkedList<T>();
+		count = Math.min(k, input.size()); // to handle when k > input.size
 		// empty the heap
-		for (int i = 0; i < k; i++) {
+		for (int i = 0; i < count; i++) {
 			result.add(heap.removeMin());
 		}
 		return result;

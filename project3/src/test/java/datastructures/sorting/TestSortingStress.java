@@ -72,11 +72,11 @@ public class TestSortingStress extends BaseTest {
         		assertTrue(heapMin == expected[i]);
         }
     }
-	
     
     //  SORTING STRESS TESTS
     @Test(timeout=10*SECOND)
     public void randomIntStressTest() {
+<<<<<<< HEAD
     	Random r = new Random();
     	List<Integer> expected = new LinkedList<Integer>();
     	IList<Integer> actual = new DoubleLinkedList<Integer>();
@@ -90,6 +90,36 @@ public class TestSortingStress extends BaseTest {
     	for (int i = 0; i < 1; i++) {
     		assertEquals(expected.get(i), (actual.get(i)));
     	}
+=======
+	    	Random r = new Random();
+	    	IList<Integer> expected = new DoubleLinkedList<Integer>();
+	    	IList<Integer> actual = new DoubleLinkedList<Integer>();
+	    	for (int i = 0; i < 100000; i++) {
+	    		int rand = r.nextInt();
+	    		expected.add(rand);
+	    		actual.add(rand);
+	    	}
+	    	
+	    	Collections.sort(expected);
+	    	Searcher.topKSort(100000, actual);
+	    	//  The method sort(List<T>) in the type Collections is not applicable for the arguments (IList<Integer>)
+	    	assertTrue(expected.equals(actual));
+
+//    	Random r = new Random();
+//    	List<Integer> expected = new LinkedList<Integer>();
+//    	IList<Integer> actual = new DoubleLinkedList<Integer>();
+//    	for (int i = 0; i < 100; i++) {
+//    		int rand = r.nextInt(11);
+//    		expected.add(rand);
+//    		actual.add(rand);
+//    	}
+//    	Collections.sort(expected); 
+//    	Searcher.topKSort(100, actual);
+//    	for (int i = 0; i < 100; i++) {
+//    		assertEquals(expected.get(i), (actual.get(i)));
+//    	}
+
+>>>>>>> f04b0ff757b349b05194f7b33e58f5cec810a34b
     }
 
 }
