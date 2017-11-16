@@ -66,12 +66,12 @@ public class TestTopKSortFunctionality extends BaseTest {
 	//  Test reverse order
 	@Test(timeout=SECOND)
 	public void testReverseOrder() {
-	    	IList<String> list = new DoubleLinkedList<>();
-	    	String alphabet = "abcdefghijklmnopqrstuvwxyz";
-	    	String alphabetReverse = "zyxwvutsrqpomnlkjihgfedcba";
-	    	for (int i = 0; i < 26; i++) {
-	    		list.add(alphabetReverse.charAt(i) + "");
-	    	}
+	    IList<String> list = new DoubleLinkedList<>();
+	    String alphabet = "abcdefghijklmnopqrstuvwxyz";
+	    String alphabetReverse = "zyxwvutsrqpomnlkjihgfedcba";
+	    for (int i = 0; i < 26; i++) {
+	    	list.add(alphabetReverse.charAt(i) + "");
+	    }
         IList<String> top = Searcher.topKSort(26, list);
         assertEquals(26, top.size());
         for (int i = 0; i < top.size(); i++) {
@@ -85,11 +85,9 @@ public class TestTopKSortFunctionality extends BaseTest {
     	IList<String> list = new DoubleLinkedList<>();
     	String alphabetTop10 = "qrstuvwxyz";
     	String alphabetReverse = "zyxwvutsrqpomnlkjihgfedcba";
-        
     	for (int i = 0; i < 26; i++) {
     		list.add(alphabetReverse.charAt(i) + "");
     	}
-
         IList<String> top = Searcher.topKSort(10, list);
         assertEquals(10, top.size());
         for (int i = 0; i < top.size(); i++) {
@@ -104,13 +102,10 @@ public class TestTopKSortFunctionality extends BaseTest {
         for (int i = 0; i < 20; i++) {
             list.add(i * 1.0);
         }
-
         IList<Double> top = Searcher.topKSort(5, list);
         assertEquals(5, top.size());
         for (int i = 0; i < top.size(); i++) {
             assertEquals(15 + i * 1.0, top.get(i));
         }
-    }
-    
-    
+    }        
 }

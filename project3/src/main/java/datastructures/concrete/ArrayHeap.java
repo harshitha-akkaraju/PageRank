@@ -171,14 +171,4 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
 		}
 		this.heap = temp;
     }
-    
-    // TODO: Delete Later
-    public void print() {
-    	System.out.print("[" + this.heap[0]);
-    	for (int i = 1; i < this.size; i++) {
-    		System.out.print(", " + this.heap[i]);
-   		}
-   		System.out.print("]");
-   		System.out.println();
-    }
 }
