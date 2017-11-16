@@ -34,11 +34,8 @@ public class TestTopKSortFunctionality extends BaseTest {
 
     }
 	
-<<<<<<< HEAD
 	// test k greater than size -- empty container exception?
-=======
 	// When k > size
->>>>>>> f04b0ff757b349b05194f7b33e58f5cec810a34b
 	@Test(timeout=SECOND)
     public void testKGreaterThanSize() {
         IList<Integer> list = new DoubleLinkedList<>();
@@ -48,11 +45,7 @@ public class TestTopKSortFunctionality extends BaseTest {
         IList<Integer> top = Searcher.topKSort(50, list);
         assertEquals(20, top.size());
         for (int i = 0; i < top.size(); i++) {
-<<<<<<< HEAD
-            assertEquals(list.get(i), top.get(i));
-=======
             assertEquals(i, top.get(i));
->>>>>>> f04b0ff757b349b05194f7b33e58f5cec810a34b
         }
     }	
 	
