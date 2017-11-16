@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.Iterator;
 
 import misc.BaseTest;
 import misc.Searcher;
@@ -75,20 +76,23 @@ public class TestSortingStress extends BaseTest {
     
     //  SORTING STRESS TEST
     //  Test ordering randomly generated integers
-    @Test(timeout=20*SECOND)
+    @Test(timeout=10*SECOND)
     public void randomIntStressTest() {
     	Random r = new Random();
     	List<Integer> expected = new LinkedList<Integer>();
     	IList<Integer> actual = new DoubleLinkedList<Integer>();
+    	
     	for (int i = 0; i < 100000; i++) {
-    		int rand = r.nextInt(11);
+    		int rand = r.nextInt();
     		expected.add(rand);
     		actual.add(rand);
     	}
     	Collections.sort(expected); 
     	actual = Searcher.topKSort(100000, actual); 	
-    	for (int i = 0; i < 100000; i++) {
-    		assertEquals(expected.get(i), (actual.get(i)));
+    	Iterator<Integer> itrE = expected.iterator();
+    	Iterator<Integer> itrA = actual.iterator();
+    	while (itrE.hasNext()) {
+    		assertEquals(itrE.next(), itrA.next());
     	}
 
     }
