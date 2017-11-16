@@ -12,6 +12,7 @@ import static org.junit.Assert.fail;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.LinkedList;
 
 /**
  * See spec for details on what kinds of tests this class should include.
@@ -22,7 +23,7 @@ import java.util.List;
 public class TestTopKSortFunctionality extends BaseTest {
     
 	
-	//  Test k zero
+	//  When k = 0
 	@Test(timeout=SECOND)
     public void testKEqualsZero() {
         IList<Integer> list = new DoubleLinkedList<>();
@@ -31,11 +32,9 @@ public class TestTopKSortFunctionality extends BaseTest {
         }
         IList<Integer> top = Searcher.topKSort(0, list);
         assertEquals(0, top.size());
-
     }
 	
-	// test k greater than size -- empty container exception?
-	// When k > size
+	//  When k > size
 	@Test(timeout=SECOND)
     public void testKGreaterThanSize() {
         IList<Integer> list = new DoubleLinkedList<>();
@@ -63,19 +62,8 @@ public class TestTopKSortFunctionality extends BaseTest {
             assertEquals(15 + i, top.get(i));
         }
     }
-	
-	//
-	@Test(timeout=SECOND)
-    public void testLargerSet() {
-        IList<Integer> list = new DoubleLinkedList<>();
-        for (int i = 0; i < 100; i++) {
-            list.add(i);
-            list.add(i - 50);
-        }
-        IList<Integer> top = Searcher.topKSort(100, list);
-        assertEquals(100, top.size());
-    }
     
+	//  Test reverse order
 	@Test(timeout=SECOND)
 	public void testReverseOrder() {
 	    	IList<String> list = new DoubleLinkedList<>();
@@ -91,7 +79,7 @@ public class TestTopKSortFunctionality extends BaseTest {
         }
 	}
 	
-    //  Tests Strings
+    //  Test Strings
     @Test(timeout=SECOND)
     public void testStrings() {
     	IList<String> list = new DoubleLinkedList<>();
@@ -109,7 +97,7 @@ public class TestTopKSortFunctionality extends BaseTest {
         }
     }
     
-    //  Tests Doubles
+    //  Test Doubles
     @Test(timeout=SECOND)
     public void testDoubles() {
     	IList<Double> list = new DoubleLinkedList<>();
