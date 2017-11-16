@@ -46,19 +46,19 @@ public class TestArrayHeapFunctionality extends BaseTest {
     // Empty the heap 
     @Test(timeout=SECOND)
     public void testAddAndRemoveBasic() {
-    	IPriorityQueue<Integer> heap = this.makeBasicHeap();
-    	int[] expected = {1, 1, 2, 2, 2, 5, 6, 9};
-    	int[] actual = new int[heap.size()];
-    	for (int i = 0; i < actual.length; i++) {
-    		actual[i] = heap.removeMin();
-    	}
-    	assertTrue(matches(expected, actual));
+	    	IPriorityQueue<Integer> heap = this.makeBasicHeap();
+	    	int[] expected = {1, 1, 2, 2, 2, 5, 6, 9};
+	    	int[] actual = new int[heap.size()];
+	    	for (int i = 0; i < actual.length; i++) {
+	    		actual[i] = heap.removeMin();
+	    	}
+	    	assertTrue(matches(expected, actual));
     }
     
     //  Tests if the expected out matches the actual output
     private boolean matches(int[] expected, int[] actual) {
-    	assertEquals(expected.length, actual.length);
-    	boolean matches = true;
+	    	assertEquals(expected.length, actual.length);
+	    	boolean matches = true;
    		for (int i = 0; i < expected.length; i++) {
    			matches = expected[i] == actual[i];
    		}
@@ -68,8 +68,8 @@ public class TestArrayHeapFunctionality extends BaseTest {
     //  Make a heap with repeated values
     @Test(timeout=SECOND)
     public void testInsertBasic() {
-    	IPriorityQueue<Integer> heap = this.makeBasicHeap();
-    	assertEquals(8, heap.size());
+	    	IPriorityQueue<Integer> heap = this.makeBasicHeap();
+	    	assertEquals(8, heap.size());
     }
     
     //  Test two consecutive removes
@@ -119,7 +119,7 @@ public class TestArrayHeapFunctionality extends BaseTest {
     public void testSizeErrorHandling() {
         IPriorityQueue<Integer> heap = this.makeInstance();
         try {
-        	heap.size();
+        		heap.size();
         } catch (EmptyContainerException e) {
         }
     }
@@ -173,40 +173,40 @@ public class TestArrayHeapFunctionality extends BaseTest {
     //  Test adding and removing Strings
     @Test(timeout=SECOND)
     public void testStrings() {
-    	IPriorityQueue<String> heap = new ArrayHeap<String>();    	
-    	heap.insert("Shaarika");
-    	heap.insert("Harshitha");
-    	heap.insert("Evan");
-    	heap.insert("Anran");
-    	heap.insert("Kaiyu");   
-    	
-    	assertEquals(heap.removeMin(), "Anran");
-    	assertEquals(heap.removeMin(), "Evan");   
-    	
-    	String[] expected = new String[] {"Harshitha", "Kaiyu", "Shaarika"};
-    	for (int i = 0; i < heap.size(); i++) {
-    		expected[i] = heap.removeMin();
-    	}    	
+	    	IPriorityQueue<String> heap = new ArrayHeap<String>();    	
+	    	heap.insert("Shaarika");
+	    	heap.insert("Harshitha");
+	    	heap.insert("Evan");
+	    	heap.insert("Anran");
+	    	heap.insert("Kaiyu");   
+	    	
+	    	assertEquals(heap.removeMin(), "Anran");
+	    	assertEquals(heap.removeMin(), "Evan");   
+	    	
+	    	String[] expected = new String[] {"Harshitha", "Kaiyu", "Shaarika"};
+	    	for (int i = 0; i < heap.size(); i++) {
+	    		expected[i] = heap.removeMin();
+	    	}    	
     }
     
     //  Test adding and removing Doubles
     @Test(timeout=SECOND)
     public void testDoubles() {
-    	IPriorityQueue<Double> heap = new ArrayHeap<Double>();
-    	heap.insert(2.0);
-    	heap.insert(3.7);
-    	heap.insert(19.5);
-    	heap.insert(19.4);
-    	heap.insert(-200.1);
-    	heap.insert(15.3);
-    	heap.insert(70.5); 
-    	
-    	assertEquals(heap.removeMin(), -200.1);
-    	assertEquals(heap.removeMin(), 2.0);   
-    	
-    	Double[] expected = new Double[] {3.7, 15.3, 19.4, 19.5, 70.5};
-    	for (int i = 0; i < heap.size(); i++) {
-    		expected[i] = heap.removeMin();
-    	}
+	    	IPriorityQueue<Double> heap = new ArrayHeap<Double>();
+	    	heap.insert(2.0);
+	    	heap.insert(3.7);
+	    	heap.insert(19.5);
+	    	heap.insert(19.4);
+	    	heap.insert(-200.1);
+	    	heap.insert(15.3);
+	    	heap.insert(70.5); 
+	    	
+	    	assertEquals(heap.removeMin(), -200.1);
+	    	assertEquals(heap.removeMin(), 2.0);   
+	    	
+	    	Double[] expected = new Double[] {3.7, 15.3, 19.4, 19.5, 70.5};
+	    	for (int i = 0; i < heap.size(); i++) {
+	    		expected[i] = heap.removeMin();
+	    	}
     }    
 }
