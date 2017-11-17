@@ -17,7 +17,7 @@ import java.net.URI;
 public class TfIdfAnalyzer {
     // This field must contain the IDF score for every single word in all
     // the documents.
-    private IDictionary<String, Double> idfScores;	//  ln (total num docs/num docs containing term)
+    private IDictionary<String, Double> idfScores;	
     // This field must contain the TF-IDF vector for each webpage you were given
     // in the constructor.
     //
@@ -26,7 +26,7 @@ public class TfIdfAnalyzer {
 
     // Feel free to add extra fields and helper methods.
     
-    //  private IDictionary<String,Double> tfScores;	//  num times term appears in doc/total num words in a doc
+    //  private IDictionary<String,Double> tfScores; ?
     
     public TfIdfAnalyzer(ISet<Webpage> webpages) {
         // Implementation note: We have commented these method calls out so your
@@ -36,8 +36,8 @@ public class TfIdfAnalyzer {
         // You should uncomment these lines when you're ready to begin working
         // on this class.
 
-        //this.idfScores = this.computeIdfScores(webpages);
-        //this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages);
+        // this.idfScores = this.computeIdfScores(webpages);
+        // this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages);
     }
 
     // Note: this method, strictly speaking, doesn't need to exist. However,
@@ -58,7 +58,14 @@ public class TfIdfAnalyzer {
      * in any documents to their IDF score.
      */
     private IDictionary<String, Double> computeIdfScores(ISet<Webpage> pages) {
-        throw new NotYetImplementedException();
+    /* new idict idf scores?  already have private var	
+     * for (uniqueTerm : pages) {
+    		idfScore = ln(total num docs/num docs containing uniqueTerm)
+    		idfScores.put(uniqueTerm, idfScore);
+    	}  	
+     	*/
+    	
+    	throw new NotYetImplementedException();
     }
 
     /**
@@ -68,7 +75,15 @@ public class TfIdfAnalyzer {
      * We are treating the list of words as if it were a document.
      */
     private IDictionary<String, Double> computeTfScores(IList<String> words) {
-        throw new NotYetImplementedException();
+        /* new iDict IFscores? already have a private var
+         * words.itr = new iterator();
+         * while (itr.hasNext) {
+         * 		score = number of times term appears in doc/total num words in a doc
+         * 		ifScores.put(uniqueTerm, ifScore)
+         * }
+         * return dictionary
+         */
+    	throw new NotYetImplementedException();
     }
 
     /**
