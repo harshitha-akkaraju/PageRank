@@ -17,8 +17,7 @@ import java.net.URI;
 public class TfIdfAnalyzer {
     // This field must contain the IDF score for every single word in all
     // the documents.
-    private IDictionary<String, Double> idfScores;
-
+    private IDictionary<String, Double> idfScores;	//  ln (total num docs/num docs containing term)
     // This field must contain the TF-IDF vector for each webpage you were given
     // in the constructor.
     //
@@ -26,7 +25,9 @@ public class TfIdfAnalyzer {
     private IDictionary<URI, IDictionary<String, Double>> documentTfIdfVectors;
 
     // Feel free to add extra fields and helper methods.
-
+    
+    //  private IDictionary<String,Double> tfScores;	//  num times term appears in doc/total num words in a doc
+    
     public TfIdfAnalyzer(ISet<Webpage> webpages) {
         // Implementation note: We have commented these method calls out so your
         // search engine doesn't immediately crash when you try running it for the
@@ -87,9 +88,10 @@ public class TfIdfAnalyzer {
      *               webpages given to the constructor.
      */
     public Double computeRelevance(IList<String> query, URI pageUri) {
-        // TODO: Replace this with actual, working code.
+    	//  Relevance(term, document) = TF(term, document) * IDF(term)
 
-        // TODO: The pseudocode we gave you is not very efficient. When implementing,
+    	// TODO: Replace this with actual, working code.        
+    	// TODO: The pseudocode we gave you is not very efficient. When implementing,
         // this smethod, you should:
         //
         // 1. Figure out what information can be precomputed in your constructor.
