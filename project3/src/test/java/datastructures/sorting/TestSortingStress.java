@@ -1,3 +1,9 @@
+/*
+ * Team Members
+ * Harshitha Akkaraju
+ * Shaarika Kaul
+ */
+
 package datastructures.sorting;
 
 import static org.junit.Assert.assertTrue;
@@ -45,16 +51,16 @@ public class TestSortingStress extends BaseTest {
     // Test worst case for building a heap (when elements are in reverse sorted order)
     @Test(timeout=10*SECOND)
     public void testBuildHeapWorstCase() {
-    	IPriorityQueue<Integer> heap = this.makeInstance();
-    	int[] expected = new int[10000000];
-    	for (int i = 10000000 - 1; i >= 0; i--) {
-    		heap.insert(i);
-    		expected[i] = i;
-    	}
-    	Arrays.sort(expected);
-    	for (int i = 0; i < expected.length; i++) {
-    		assertTrue(expected[i] == heap.removeMin());
-    	}
+	    	IPriorityQueue<Integer> heap = this.makeInstance();
+	    	int[] expected = new int[10000000];
+	    	for (int i = 10000000 - 1; i >= 0; i--) {
+	    		heap.insert(i);
+	    		expected[i] = i;
+	    	}
+	    	Arrays.sort(expected);
+	    	for (int i = 0; i < expected.length; i++) {
+	    		assertTrue(expected[i] == heap.removeMin());
+	    	}
     }
     
     //  Insert and remove a large amount of data and compare with expected out 
@@ -77,21 +83,21 @@ public class TestSortingStress extends BaseTest {
     //  Test ordering randomly generated integers
     @Test(timeout=10*SECOND)
     public void randomIntStressTest() {
-    	Random r = new Random();
-    	List<Integer> expected = new LinkedList<Integer>();
-    	IList<Integer> actual = new DoubleLinkedList<Integer>();    	
-    	for (int i = 0; i < 100000; i++) {
-    		int rand = r.nextInt();
-    		expected.add(rand);
-    		actual.add(rand);
-    	}
+	    	Random r = new Random();
+	    	List<Integer> expected = new LinkedList<Integer>();
+	    	IList<Integer> actual = new DoubleLinkedList<Integer>();    	
+	    	for (int i = 0; i < 100000; i++) {
+	    		int rand = r.nextInt();
+	    		expected.add(rand);
+	    		actual.add(rand);
+	    	}
     	
-    	Collections.sort(expected); 
-    	actual = Searcher.topKSort(100000, actual); 	
-    	Iterator<Integer> itrE = expected.iterator();
-    	Iterator<Integer> itrA = actual.iterator();
-    	while (itrE.hasNext()) {
-    		assertEquals(itrE.next(), itrA.next());
-    	}
+	    	Collections.sort(expected); 
+	    	actual = Searcher.topKSort(100000, actual); 	
+	    	Iterator<Integer> itrE = expected.iterator();
+	    	Iterator<Integer> itrA = actual.iterator();
+	    	while (itrE.hasNext()) {
+	    		assertEquals(itrE.next(), itrA.next());
+	    	}
     }
 }
