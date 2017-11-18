@@ -26,6 +26,7 @@ public class TfIdfAnalyzer {
     // This field must contain the IDF score for every single word in all
     // the documents.
     private IDictionary<String, Double> idfScores;	//  ln (total num docs/num docs containing term)
+    
     // This field must contain the TF-IDF vector for each webpage you were given
     // in the constructor.
     //
@@ -140,6 +141,12 @@ public class TfIdfAnalyzer {
     private IDictionary<URI, IDictionary<String, Double>> computeAllDocumentTfIdfVectors(ISet<Webpage> pages) {
         // Hint: this method should use the idfScores field and
         // call the computeTfScores(...) method.
+    		IDictionary<URI, IDictionary<String, Double>> result = 
+    				new ChainedHashDictionary<URI, IDictionary<String, Double>>();
+    		Iterator<Webpage> pgItr = pages.iterator();
+    		while (pgItr.hasNext()) {
+    			
+    		}
         throw new NotYetImplementedException();
     }
 
