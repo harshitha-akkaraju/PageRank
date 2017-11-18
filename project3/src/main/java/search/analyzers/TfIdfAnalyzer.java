@@ -46,9 +46,8 @@ public class TfIdfAnalyzer {
         // You should uncomment these lines when you're ready to begin working
         // on this class.
 
-//        this.idfScores = this.computeIdfScores(webpages);
-//   		this.tfScores = this.computeTfScores(webpages);
-//        this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages);
+        this.idfScores = this.computeIdfScores(webpages);
+        this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages);
     }
 
     // Note: this method, strictly speaking, doesn't need to exist. However,
@@ -63,45 +62,6 @@ public class TfIdfAnalyzer {
     // these methods: Feel free to change or modify these methods if you want. The
     // important thing is that your 'computeRelevance' method ultimately returns the
     // correct answer in an efficient manner.
-    
-    /**
-     * New helper method
-     * This method should return a dictionary mapping every single unique word found
-     * in any documents to their IDF score.
-     */
-    public IDictionary<String, Double> computeTfCounts(ISet<Webpage> pages) {
-    		IDictionary<String, Double> tfCounts = new ChainedHashDictionary<String, Double>();
-    		Iterator<Webpage> pgItr = pages.iterator();
-    		while (pgItr.hasNext()) {
-    			// gets one page
-    			Webpage page = pgItr.next();
-    			// list of all the words in 'page'
-    			IList<String> wordsList = page.getWords();
-    			Iterator<String> wordsListItr = wordsList.iterator();
-    			while (wordsListItr.hasNext()) {
-    				// gets one word from 'wordsList'
-    				String word = wordsListItr.next();
-    				if (tfCounts.containsKey(word)) {
-    					double count = tfCounts.get(word);
-    					tfCounts.put(word, count + 1);
-    				} else {
-    					tfCounts.put(word, 1.0);
-    				}
-    			}
-    		}
-    		return tfCounts;
-    }
-    
-    public IDictionary<String, Double> computeTfScores(ISet<Webpage> pages) {
-    		IDictionary<String, Double> tfScores = computeTfCounts(pages); // Compute the counts first
-    		Iterator<KVPair<String, Double>> tfCountsItr = tfScores.iterator();
-    		while (tfCountsItr.hasNext()) {
-    			KVPair<String, Double> tfPair = tfCountsItr.next();
-    			//  num times term appears in doc/total words in doc
-    			tfScores.put(tfPair.getKey(), tfPair.getValue() / tfScores.size()); 
-    		}
-    		return tfScores;
-    }
     
     /**
      * This method should return a dictionary mapping every single unique word found
@@ -140,28 +100,46 @@ public class TfIdfAnalyzer {
 		}
 		return idfScores;
 }
-    
-    
-    
-    
 
-    /** HARSHITHA CHECK THIS OUT
+    /**
      * Returns a dictionary mapping every unique word found in the given list
-     * to their term frequency (TF) score.
+     * to their term frequency (TF) counts.
+     *
+     * We are treating the list of words as if it were a document.
+     */
+    private IDictionary<String, Double> computeTfCounts(IList<String> words) {
+    		IDictionary<String, Double> tfCounts = new ChainedHashDictionary<String, Double>();
+    		Iterator<String> wordsListItr = words.iterator();
+		while (wordsListItr.hasNext()) {
+			// gets one word from 'wordsList'
+			String word = wordsListItr.next();
+			if (tfCounts.containsKey(word)) {
+				double count = tfCounts.get(word);
+				tfCounts.put(word, count + 1);
+			} else {
+				tfCounts.put(word, 1.0);
+			}
+		}
+    		return tfCounts;
+    }
+    
+    /**
+     * Returns a dictionary mapping every unique word found in the given list
+     * to their term frequency (TF) scores.
      *
      * We are treating the list of words as if it were a document.
      */
     private IDictionary<String, Double> computeTfScores(IList<String> words) {
-        /* new iDict IFscores? already have a private var
-         * words.itr = new iterator();
-         * while (itr.hasNext) {
-         * 		score = number of times term appears in doc/total num words in a doc
-         * 		ifScores.put(uniqueTerm, ifScore)
-         * }
-         * return dictionary
-         */
-    	throw new NotYetImplementedException();
+    		IDictionary<String, Double> tfScores = computeTfCounts(words); // Compute the counts first
+    		Iterator<KVPair<String, Double>> tfCountsItr = tfScores.iterator();
+    		while (tfCountsItr.hasNext()) {
+    			KVPair<String, Double> tfPair = tfCountsItr.next();
+    			//  num times term appears in doc/total words in doc
+    			tfScores.put(tfPair.getKey(), tfPair.getValue() / tfScores.size()); 
+    		}
+    		return tfScores;
     }
+    
 
     /**
      * See spec for more details on what this method should do.
@@ -173,9 +151,19 @@ public class TfIdfAnalyzer {
     				new ChainedHashDictionary<URI, IDictionary<String, Double>>();
     		Iterator<Webpage> pgItr = pages.iterator();
     		while (pgItr.hasNext()) {
-    			
+    			Webpage page = pgItr.next();
+    			URI uri = page.getUri();
+    			IDictionary<String, Double> pgTfIdfScores = new ChainedHashDictionary<String, Double>();
+    			IDictionary<String, Double> tfScores = computeTfScores(page.getWords());
+    			Iterator<KVPair<String, Double>> tfScoresItr = tfScores.iterator();
+    			while (tfScoresItr.hasNext()) {
+    				KVPair tfScore = tfScoresItr.next();
+    				double idfScore = this.idfScores.get((String) tfScore.getKey()) * (Double) tfScore.getValue();
+    				pgTfIdfScores.put((String) tfScore.getKey(), idfScore);
+    			}
+    			result.put(uri, pgTfIdfScores);
     		}
-        throw new NotYetImplementedException();
+    		return result;
     }
 
     /**
