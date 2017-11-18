@@ -45,9 +45,9 @@ public class TfIdfAnalyzer {
         // You should uncomment these lines when you're ready to begin working
         // on this class.
 
-        this.idfScores = this.computeIdfScores(webpages);
-    		this.tfScores = this.computeTfScores(webpages);
-        this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages);
+//        this.idfScores = this.computeIdfScores(webpages);
+//    		this.tfScores = this.computeTfScores(webpages);
+//        this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages);
     }
 
     // Note: this method, strictly speaking, doesn't need to exist. However,
@@ -161,6 +161,6 @@ public class TfIdfAnalyzer {
         //    Add a third field containing that information.
         //
         // 2. See if you can combine or merge one or more loops.
-        return 0.0;
+        return 1.0;
     }
 }
