@@ -47,7 +47,7 @@ public class TfIdfAnalyzer {
         // on this class.
 
 //        this.idfScores = this.computeIdfScores(webpages);
-//    		this.tfScores = this.computeTfScores(webpages);
+//   		this.tfScores = this.computeTfScores(webpages);
 //        this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages);
     }
 
@@ -97,7 +97,8 @@ public class TfIdfAnalyzer {
     		Iterator<KVPair<String, Double>> tfCountsItr = tfScores.iterator();
     		while (tfCountsItr.hasNext()) {
     			KVPair<String, Double> tfPair = tfCountsItr.next();
-    			tfScores.put(tfPair.getKey(), tfPair.getValue() / tfScores.size());
+    			//  num times term appears in doc/total words in doc
+    			tfScores.put(tfPair.getKey(), tfPair.getValue() / tfScores.size()); 
     		}
     		return tfScores;
     }
@@ -106,18 +107,45 @@ public class TfIdfAnalyzer {
      * This method should return a dictionary mapping every single unique word found
      * in any documents to their IDF score.
      */
-    private IDictionary<String, Double> computeIdfScores(ISet<Webpage> pages) {
-	    /* new idict idf scores?  already have private var	
-	     * for (uniqueTerm : pages) {
-	    		idfScore = ln(total num docs/num docs containing uniqueTerm)
-	    		idfScores.put(uniqueTerm, idfScore);
-	    	}  	
-	     	*/
-    	
-    	throw new NotYetImplementedException();
+    
+    // need to get num docs and number of documents that have that word
+    private IDictionary<String, Double> computeIdfCounts(ISet<Webpage> pages) {
+    	IDictionary<String, Double> idfCounts = new ChainedHashDictionary<String, Double>();
+		Iterator<Webpage> pgItr = pages.iterator();
+		while (pgItr.hasNext()) {
+			// gets one page
+			Webpage page = pgItr.next();
+			Double numPages = 0.0;
+			// list of all the words in 'page'
+			IList<String> wordsList = page.getWords();
+			Iterator<String> wordsListItr = wordsList.iterator();
+			while (wordsListItr.hasNext()) {
+				// gets one word from 'wordsList'
+				String word = wordsListItr.next();
+				if (!idfCounts.containsKey(word)) {
+					idfCounts.put(word, numPages++);
+				}
+			}
+		}
+		return idfCounts;
     }
+    
+    public IDictionary<String, Double> computeIdfScores(ISet<Webpage> pages) {
+     	//	ln (total num docs/num docs containing term)    	
+		IDictionary<String, Double> idfScores = computeIdfCounts(pages); // Compute the counts first
+		Iterator<KVPair<String, Double>> idfCountsItr = idfScores.iterator();
+		while (idfCountsItr.hasNext()) {
+			KVPair<String, Double> idfPair = idfCountsItr.next();
+			idfScores.put(idfPair.getKey(), Math.log(pages.size()/idfPair.getValue()));
+		}
+		return idfScores;
+}
+    
+    
+    
+    
 
-    /**
+    /** HARSHITHA CHECK THIS OUT
      * Returns a dictionary mapping every unique word found in the given list
      * to their term frequency (TF) score.
      *
