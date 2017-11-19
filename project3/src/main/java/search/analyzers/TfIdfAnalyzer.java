@@ -70,7 +70,7 @@ public class TfIdfAnalyzer {
     
     // need to get num docs and number of documents that have that word
     private IDictionary<String, Double> computeIdfCounts(ISet<Webpage> pages) {
-    	IDictionary<String, Double> idfCounts = new ChainedHashDictionary<String, Double>();
+    		IDictionary<String, Double> idfCounts = new ChainedHashDictionary<String, Double>();
 		Iterator<Webpage> pgItr = pages.iterator();
 		while (pgItr.hasNext()) {
 			// gets one page
@@ -99,7 +99,7 @@ public class TfIdfAnalyzer {
 			idfScores.put(idfPair.getKey(), Math.log(pages.size()/idfPair.getValue()));
 		}
 		return idfScores;
-}
+    }
 
     /**
      * Returns a dictionary mapping every unique word found in the given list
@@ -174,8 +174,8 @@ public class TfIdfAnalyzer {
      *               webpages given to the constructor.
      */
     public Double computeRelevance(IList<String> query, URI pageUri) {
-    	//  Relevance(term, document) = TF(term, document) * IDF(term)
-
+    		//  Relevance(term, document) = TF(term, document) * IDF(term)
+    		
     	// TODO: Replace this with actual, working code.        
     	// TODO: The pseudocode we gave you is not very efficient. When implementing,
         // this smethod, you should:
