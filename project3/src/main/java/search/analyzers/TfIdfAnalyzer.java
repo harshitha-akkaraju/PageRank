@@ -71,22 +71,15 @@ public class TfIdfAnalyzer {
     // need to get num docs and number of documents that have that word
     private IDictionary<String, Double> computeIdfCounts(ISet<Webpage> pages) {
     		IDictionary<String, Double> idfCounts = new ChainedHashDictionary<String, Double>();
-		Iterator<Webpage> pgItr = pages.iterator();
 		URI lastSeen = null;
-		while (pgItr.hasNext()) {
-			// gets one page
-			Webpage page = pgItr.next();
-			// list of all the words in 'page'
-			IList<String> wordsList = page.getWords();
-			Iterator<String> wordsListItr = wordsList.iterator();
-			while (wordsListItr.hasNext()) {
-				// gets one word from 'wordsList'
-				String word = wordsListItr.next();
+		for (Webpage pg : pages) {
+			IList<String> wordsList = pg.getWords();
+			for (String word: wordsList) {
 				if (!idfCounts.containsKey(word)) {
 					idfCounts.put(word, 1.0);
-				} else if (idfCounts.containsKey(word) && !page.getUri().equals(lastSeen)) {
+				} else if (idfCounts.containsKey(word) && !pg.getUri().equals(lastSeen)) {
 					idfCounts.put(word, idfCounts.get(word) + 1.0);
-					lastSeen = page.getUri();
+					lastSeen = pg.getUri();
 				}
 			}
 		}
@@ -96,9 +89,7 @@ public class TfIdfAnalyzer {
     public IDictionary<String, Double> computeIdfScores(ISet<Webpage> pages) {
      	//	ln (total num docs/num docs containing term)    	
 		IDictionary<String, Double> idfScores = computeIdfCounts(pages); // Compute the counts first
-		Iterator<KVPair<String, Double>> idfCountsItr = idfScores.iterator();
-		while (idfCountsItr.hasNext()) {
-			KVPair<String, Double> idfPair = idfCountsItr.next();
+		for (KVPair<String, Double> idfPair : idfScores) {
 			idfScores.put(idfPair.getKey(), Math.log(pages.size() / idfPair.getValue()));
 		}
 		return idfScores;
@@ -112,17 +103,14 @@ public class TfIdfAnalyzer {
      */
     private IDictionary<String, Double> computeTfCounts(IList<String> words) {
     		IDictionary<String, Double> tfCounts = new ChainedHashDictionary<String, Double>();
-    		Iterator<String> wordsListItr = words.iterator();
-		while (wordsListItr.hasNext()) {
-			// gets one word from 'wordsList'
-			String word = wordsListItr.next();
-			if (tfCounts.containsKey(word)) {
-				double count = tfCounts.get(word);
-				tfCounts.put(word, count + 1.0);
-			} else {
-				tfCounts.put(word, 1.0);
-			}
-		}
+    		for (String word : words) {
+    			if (tfCounts.containsKey(word)) {
+    				double count = tfCounts.get(word);
+    				tfCounts.put(word, count + 1.0);
+    			} else {
+    				tfCounts.put(word, 1.0);
+    			}
+    		}
     		return tfCounts;
     }
     
@@ -134,10 +122,8 @@ public class TfIdfAnalyzer {
      */
     private IDictionary<String, Double> computeTfScores(IList<String> words) {
     		IDictionary<String, Double> tfScores = computeTfCounts(words); // Compute the counts first
-    		Iterator<KVPair<String, Double>> tfCountsItr = tfScores.iterator();
-    		while (tfCountsItr.hasNext()) {
-    			KVPair<String, Double> tfPair = tfCountsItr.next();
-    			tfScores.put(tfPair.getKey(), (Double) tfPair.getValue() / words.size()); 
+    		for (KVPair<String, Double> tfPair : tfScores) {
+    			tfScores.put(tfPair.getKey(), (Double) tfPair.getValue() / words.size());
     		}
     		return tfScores;
     }
@@ -151,17 +137,13 @@ public class TfIdfAnalyzer {
         // call the computeTfScores(...) method.
     		IDictionary<URI, IDictionary<String, Double>> result = 
     				new ChainedHashDictionary<URI, IDictionary<String, Double>>();
-    		Iterator<Webpage> pgItr = pages.iterator();
-    		while (pgItr.hasNext()) {
-    			Webpage page = pgItr.next();
-    			URI uri = page.getUri();
+    		for (Webpage pg : pages) {
+    			URI uri = pg.getUri();
     			IDictionary<String, Double> pgTfIdfScores = new ChainedHashDictionary<String, Double>();
-    			IDictionary<String, Double> tfScores = computeTfScores(page.getWords());
-    			Iterator<KVPair<String, Double>> tfScoresItr = tfScores.iterator();
-    			while (tfScoresItr.hasNext()) {
-    				KVPair tfScore = tfScoresItr.next();
-    				double idfScore = this.idfScores.get((String) tfScore.getKey()) * (Double) tfScore.getValue();
-    				pgTfIdfScores.put((String) tfScore.getKey(), idfScore);
+    			IDictionary<String, Double> tfScores = computeTfScores(pg.getWords());
+    			for (KVPair<String, Double> tfScore: tfScores) {
+    				double vector = this.idfScores.get((String) tfScore.getKey()) * (Double) tfScore.getValue();
+    				pgTfIdfScores.put((String) tfScore.getKey(), vector);
     			}
     			result.put(uri, pgTfIdfScores);
     		}
