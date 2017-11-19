@@ -72,10 +72,10 @@ public class TfIdfAnalyzer {
     private IDictionary<String, Double> computeIdfCounts(ISet<Webpage> pages) {
     		IDictionary<String, Double> idfCounts = new ChainedHashDictionary<String, Double>();
 		Iterator<Webpage> pgItr = pages.iterator();
+		URI lastSeen = null;
 		while (pgItr.hasNext()) {
 			// gets one page
 			Webpage page = pgItr.next();
-			Double numPages = 0.0;
 			// list of all the words in 'page'
 			IList<String> wordsList = page.getWords();
 			Iterator<String> wordsListItr = wordsList.iterator();
@@ -83,7 +83,10 @@ public class TfIdfAnalyzer {
 				// gets one word from 'wordsList'
 				String word = wordsListItr.next();
 				if (!idfCounts.containsKey(word)) {
-					idfCounts.put(word, numPages++);
+					idfCounts.put(word, 1.0);
+				} else if (idfCounts.containsKey(word) && !page.getUri().equals(lastSeen)) {
+					idfCounts.put(word, idfCounts.get(word) + 1.0);
+					lastSeen = page.getUri();
 				}
 			}
 		}
@@ -96,7 +99,7 @@ public class TfIdfAnalyzer {
 		Iterator<KVPair<String, Double>> idfCountsItr = idfScores.iterator();
 		while (idfCountsItr.hasNext()) {
 			KVPair<String, Double> idfPair = idfCountsItr.next();
-			idfScores.put(idfPair.getKey(), Math.log(pages.size()/idfPair.getValue()));
+			idfScores.put(idfPair.getKey(), Math.log(pages.size() / idfPair.getValue()));
 		}
 		return idfScores;
     }
@@ -115,7 +118,7 @@ public class TfIdfAnalyzer {
 			String word = wordsListItr.next();
 			if (tfCounts.containsKey(word)) {
 				double count = tfCounts.get(word);
-				tfCounts.put(word, count + 1);
+				tfCounts.put(word, count + 1.0);
 			} else {
 				tfCounts.put(word, 1.0);
 			}
@@ -134,8 +137,7 @@ public class TfIdfAnalyzer {
     		Iterator<KVPair<String, Double>> tfCountsItr = tfScores.iterator();
     		while (tfCountsItr.hasNext()) {
     			KVPair<String, Double> tfPair = tfCountsItr.next();
-    			//  num times term appears in doc/total words in doc
-    			tfScores.put(tfPair.getKey(), tfPair.getValue() / tfScores.size()); 
+    			tfScores.put(tfPair.getKey(), (Double) tfPair.getValue() / words.size()); 
     		}
     		return tfScores;
     }
