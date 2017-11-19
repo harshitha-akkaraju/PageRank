@@ -23,14 +23,14 @@ public class ChainedHashDictionary<K, V> implements IDictionary<K, V> {
     private IDictionary<K, V>[] chains;
 
     // You're encouraged to add extra fields (and helper methods) though!
-    private int size;
+    private int dictSize;
     
     private int[] resizeValues;
     private int resizeIndex;
     
     public ChainedHashDictionary() {
         this.chains = makeArrayOfChains(11);
-        this.size = 0;
+        this.dictSize = 0;
         
         this.resizeValues = new int[] {19, 41, 83, 167, 331, 661, 1321, 2663}; //
         this.resizeIndex = 0; //
@@ -77,7 +77,7 @@ public class ChainedHashDictionary<K, V> implements IDictionary<K, V> {
     			this.chains[index] = new ArrayDictionary<K, V>();
     		}
     		if (!this.chains[index].containsKey(key)) {
-    			this.size++;
+    			this.dictSize++;
     		}
     		this.chains[index].put(key, value);
     }
@@ -94,7 +94,7 @@ public class ChainedHashDictionary<K, V> implements IDictionary<K, V> {
 	    	}
 	    	int index = indexOf(key, this.chains.length);
 		IDictionary<K, V> group = this.chains[index];
-		this.size--;
+		this.dictSize--;
 		return group.remove(key);
     }
 
@@ -116,7 +116,7 @@ public class ChainedHashDictionary<K, V> implements IDictionary<K, V> {
      */
     @Override
     public int size() {
-        return this.size;
+        return this.dictSize;
     }
 
     /**
@@ -145,7 +145,7 @@ public class ChainedHashDictionary<K, V> implements IDictionary<K, V> {
      * If pairs is full, ensureCapacity doubles the size of pairs so it can hold at least this.size elements.
      */
     private void ensureCapacity() {
-    		double loadFactor = this.size / this.chains.length;
+    		double loadFactor = this.dictSize / this.chains.length;
     		if (loadFactor > 0.75) {
     			IDictionary<K, V>[] temp;
     			if (this.resizeIndex < this.resizeValues.length) {
