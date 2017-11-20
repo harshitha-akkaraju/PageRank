@@ -158,16 +158,32 @@ public class TfIdfAnalyzer {
      *               webpages given to the constructor.
      */
     public Double computeRelevance(IList<String> query, URI pageUri) {
-    		//  Relevance(term, document) = TF(term, document) * IDF(term)
-    		
-    	// TODO: Replace this with actual, working code.        
-    	// TODO: The pseudocode we gave you is not very efficient. When implementing,
-        // this smethod, you should:
-        //
-        // 1. Figure out what information can be precomputed in your constructor.
-        //    Add a third field containing that information.
-        //
-        // 2. See if you can combine or merge one or more loops.
+    	query = computeAllDocumentIfIdfVectors();
+	    double numerator = 0.0;
+	    double docWordScore = 0.0;
+	    for (word : queryVector) {	
+	        if (documentVector.containsKey(word)) {	        	
+	        	docWordScore = documentVector.get(word);
+	        } 
+	        queryWordScore = queryVector.get(word)
+	        numerator += docWordScore * queryWordScore
+	    }
+	    denominator = norm(documentVector) * norm(queryVector);
+		
+	    if (denominator != 0) {
+	     return numerator / denominator
+	    } else {
+	    	return 0.0
+		}		
+		double norm(vector):
+	    	int output = 0.0;
+	    	for (pair : vector) {
+	        	score = pair.getValue()
+	        	output += score * score
+	        }
+	    	return sqrt(output)
+	    }
+	
         return 1.0;
     }
 }
