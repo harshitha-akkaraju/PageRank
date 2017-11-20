@@ -28,11 +28,24 @@ public class TfIdfAnalyzer {
     // in the constructor. We use each webpage's page URI as a unique key.
     private IDictionary<URI, IDictionary<String, Double>> documentTfIdfVectors;
 
+<<<<<<< HEAD
+=======
+    // Feel free to add extra fields and helper methods.
+    
+    // Field for storing TF scores for every single word in all the documents
+    private IDictionary<String,Double> tfScores;
+    IDictionary<URI, Double> documentTfIdVectorNorm;
+>>>>>>> 620a91ed9bdcd8c630a3d23581b27f1acce92bcb
     
     //  Creates new object with precomputed Idf scores and the Tf/Idf vectors.
     public TfIdfAnalyzer(ISet<Webpage> webpages) {
         this.idfScores = this.computeIdfScores(webpages);
+<<<<<<< HEAD
         this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages); 
+=======
+        this.documentTfIdVectorNorm = new ChainedHashDictionary<URI, Double>();
+        this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages);
+>>>>>>> 620a91ed9bdcd8c630a3d23581b27f1acce92bcb
     }
 
     public IDictionary<URI, IDictionary<String, Double>> getDocumentTfIdfVectors() {
@@ -114,11 +127,14 @@ public class TfIdfAnalyzer {
     			URI uri = pg.getUri();
     			IDictionary<String, Double> pgTfIdfScores = new ChainedHashDictionary<String, Double>();
     			IDictionary<String, Double> tfScores = computeTfScores(pg.getWords());
+    			double output = 0.0;
     			for (KVPair<String, Double> tfScore: tfScores) {
     				double vector = this.idfScores.get((String) tfScore.getKey()) * (Double) tfScore.getValue();
     				pgTfIdfScores.put((String) tfScore.getKey(), vector);
+    				output += vector * vector;
     			}
     			result.put(uri, pgTfIdfScores);
+    			this.documentTfIdVectorNorm.put(uri, Math.sqrt(output));
     		}
     		return result;
     }
@@ -132,6 +148,14 @@ public class TfIdfAnalyzer {
      */
 
     public Double computeRelevance(IList<String> query, URI pageUri) {
+	    	// TODO: Replace this with actual, working code.        
+	    	// TODO: The pseudocode we gave you is not very efficient. When implementing,
+	    // this smethod, you should:
+	    //
+	    // 1. Figure out what information can be precomputed in your constructor.
+	    //    Add a third field containing that information.
+	    //
+	    // 2. See if you can combine or merge one or more loops.
     		IDictionary<String, Double> docTfIdVectors = this.documentTfIdfVectors.get(pageUri);
     		IDictionary<String, Double> queryTfScores = computeTfScores(query);
     		IDictionary<String, Double> queryTfIdVectors = new ChainedHashDictionary<String, Double>();
@@ -147,10 +171,9 @@ public class TfIdfAnalyzer {
     			double queryWordScore = queryTfIdVectors.get(word);
     			numerator += docWordScore * queryWordScore;
     		}
-    		double denominator = norm(docTfIdVectors) * norm(queryTfIdVectors);
+    		double denominator = this.documentTfIdVectorNorm.get(pageUri) * norm(queryTfIdVectors);
     		double relevance = denominator == 0 ? 0.0 : numerator / denominator;
     		return relevance;
-
     }
     
     //  This method computes the returns  to be used in computeRelevance
