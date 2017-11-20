@@ -158,6 +158,7 @@ public class TfIdfAnalyzer {
      *               webpages given to the constructor.
      */
     public Double computeRelevance(IList<String> query, URI pageUri) {
+<<<<<<< HEAD
     	query = computeAllDocumentIfIdfVectors();
 	    double numerator = 0.0;
 	    double docWordScore = 0.0;
@@ -185,5 +186,40 @@ public class TfIdfAnalyzer {
 	    }
 	
         return 1.0;
+=======
+    		IDictionary<String, Double> docTfIdVectors = this.documentTfIdfVectors.get(pageUri);
+    		IDictionary<String, Double> queryTfScores = computeTfScores(query);
+    		IDictionary<String, Double> queryTfIdVectors = new ChainedHashDictionary<String, Double>();
+    		for (KVPair<String, Double> tfScore: queryTfScores) {
+    			double vector = this.idfScores.get((String) tfScore.getKey()) * (Double) tfScore.getValue();
+    			queryTfIdVectors.put((String) tfScore.getKey(), vector);
+    		}
+    		double numerator = 0.0;
+    		for (String word: query) {
+    			double docWordScore = docTfIdVectors.containsKey(word) ? docTfIdVectors.get(word) : 0.0;
+    			double queryWordScore = queryTfIdVectors.get(word);
+    			numerator += docWordScore * queryWordScore;
+    		}
+    		double denominator = norm(docTfIdVectors) * norm(queryTfIdVectors);
+    		double relevance = denominator == 0 ? 0.0 : numerator / denominator;
+    		return relevance;
+	    	// TODO: Replace this with actual, working code.        
+	    	// TODO: The pseudocode we gave you is not very efficient. When implementing,
+        // this smethod, you should:
+        //
+        // 1. Figure out what information can be precomputed in your constructor.
+        //    Add a third field containing that information.
+        //
+        // 2. See if you can combine or merge one or more loops.
+    }
+    
+    public Double norm(IDictionary<String, Double> tfIdVector) {
+    		double output = 0.0;
+    		for (KVPair<String, Double> pair: tfIdVector) {
+    			double score = pair.getValue();
+    			output += score * score;
+    		}
+    		return Math.sqrt(output);
+>>>>>>> 22450cefba928bcca24dfec82fa40a8416f76f79
     }
 }
