@@ -44,7 +44,7 @@ public class TfIdfAnalyzer {
     }
     
     /**
-     * Teturn a dictionary mapping every single unique word found in any documents to their IDF score.
+     * Return a dictionary mapping every single unique word found in any documents to their IDF score.
      */  
     
     //  Counts the number of unique words
