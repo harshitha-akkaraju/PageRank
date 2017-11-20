@@ -20,32 +20,23 @@ import java.net.URI;
  *
  * See the spec for more details.
  */
-public class TfIdfAnalyzer {	
-    // This field contains the IDF score for every single word in all the documents.
-    private IDictionary<String, Double> idfScores;	//  ln (total num docs/num docs containing term)
+public class TfIdfAnalyzer {
+    // This field stores IDF score for every single word in all the documents.
+	//  ln (total num docs/num docs containing term)
+    private IDictionary<String, Double> idfScores;	
     
-    // This field contains the TF-IDF vector for each webpage you were given
-    // in the constructor. We use each webpage's page URI as a unique key.
+    // This field contains the TF-IDF vector for each webpage given
+    // in the constructor. We will use each webpage's page URI as a unique key.
     private IDictionary<URI, IDictionary<String, Double>> documentTfIdfVectors;
-
-<<<<<<< HEAD
-=======
-    // Feel free to add extra fields and helper methods.
     
     // Field for storing TF scores for every single word in all the documents
-    private IDictionary<String,Double> tfScores;
     IDictionary<URI, Double> documentTfIdVectorNorm;
->>>>>>> 620a91ed9bdcd8c630a3d23581b27f1acce92bcb
     
-    //  Creates new object with precomputed Idf scores and the Tf/Idf vectors.
+    //  Constructor creates object and precomputes TfIdf scores/vectors
     public TfIdfAnalyzer(ISet<Webpage> webpages) {
         this.idfScores = this.computeIdfScores(webpages);
-<<<<<<< HEAD
-        this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages); 
-=======
         this.documentTfIdVectorNorm = new ChainedHashDictionary<URI, Double>();
         this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages);
->>>>>>> 620a91ed9bdcd8c630a3d23581b27f1acce92bcb
     }
 
     public IDictionary<URI, IDictionary<String, Double>> getDocumentTfIdfVectors() {
@@ -53,12 +44,12 @@ public class TfIdfAnalyzer {
     }
     
     /**
-     * This method returns a dictionary mapping every single unique word found
-     * in any documents to their IDF score.
-     */
+     * Teturn a dictionary mapping every single unique word found in any documents to their IDF score.
+     */  
     
+    //  Counts the number of unique words
     private IDictionary<String, Double> computeIdfCounts(ISet<Webpage> pages) {
-    	IDictionary<String, Double> idfCounts = new ChainedHashDictionary<String, Double>();
+    		IDictionary<String, Double> idfCounts = new ChainedHashDictionary<String, Double>();
 		URI lastSeen = null;
 		for (Webpage pg : pages) {
 			IList<String> wordsList = pg.getWords();
@@ -74,7 +65,7 @@ public class TfIdfAnalyzer {
 		return idfCounts;
     }
     
-    //  This method computes the the IDF scores for each of the words in the documents
+    //  Computes the Idf scores for the words
     public IDictionary<String, Double> computeIdfScores(ISet<Webpage> pages) {
 		IDictionary<String, Double> idfScores = computeIdfCounts(pages); // Compute the counts first
 		for (KVPair<String, Double> idfPair : idfScores) {
@@ -89,6 +80,8 @@ public class TfIdfAnalyzer {
      *
      * We are treating the list of words as if it were a document.
      */
+    
+    //  Counts the number of times words are found in a document
     private IDictionary<String, Double> computeTfCounts(IList<String> words) {
     		IDictionary<String, Double> tfCounts = new ChainedHashDictionary<String, Double>();
     		for (String word : words) {
@@ -102,12 +95,7 @@ public class TfIdfAnalyzer {
     		return tfCounts;
     }
     
-    /**
-     * Returns a dictionary mapping every unique word found in the given list
-     * to their term frequency (TF) scores.
-     *
-     * We are treating the list of words as if it were a document.
-     */
+    //  Computes the Tf scores for the words
     private IDictionary<String, Double> computeTfScores(IList<String> words) {
     		IDictionary<String, Double> tfScores = computeTfCounts(words); // Compute the counts first
     		for (KVPair<String, Double> tfPair : tfScores) {
@@ -118,7 +106,7 @@ public class TfIdfAnalyzer {
     
 
     /**
-     * See spec for more details on what this method should do.
+     * Computes the TfIdf vectors for all documents to use in the TdIdf vector
      */
     private IDictionary<URI, IDictionary<String, Double>> computeAllDocumentTfIdfVectors(ISet<Webpage> pages) {
     		IDictionary<URI, IDictionary<String, Double>> result = 
@@ -146,43 +134,25 @@ public class TfIdfAnalyzer {
      * Precondition: the given uri must have been one of the uris within the list of
      *               webpages given to the constructor.
      */
-
     public Double computeRelevance(IList<String> query, URI pageUri) {
-	    	// TODO: Replace this with actual, working code.        
-	    	// TODO: The pseudocode we gave you is not very efficient. When implementing,
-	    // this smethod, you should:
-	    //
-	    // 1. Figure out what information can be precomputed in your constructor.
-	    //    Add a third field containing that information.
-	    //
-	    // 2. See if you can combine or merge one or more loops.
     		IDictionary<String, Double> docTfIdVectors = this.documentTfIdfVectors.get(pageUri);
     		IDictionary<String, Double> queryTfScores = computeTfScores(query);
     		IDictionary<String, Double> queryTfIdVectors = new ChainedHashDictionary<String, Double>();
-    		
+    		double queryTfIdNorm = 0.0;
     		for (KVPair<String, Double> tfScore: queryTfScores) {
     			double vector = this.idfScores.get((String) tfScore.getKey()) * (Double) tfScore.getValue();
     			queryTfIdVectors.put((String) tfScore.getKey(), vector);
+    			queryTfIdNorm += vector * vector;
     		}
     		double numerator = 0.0;
-    		
     		for (String word: query) {
     			double docWordScore = docTfIdVectors.containsKey(word) ? docTfIdVectors.get(word) : 0.0;
     			double queryWordScore = queryTfIdVectors.get(word);
     			numerator += docWordScore * queryWordScore;
     		}
-    		double denominator = this.documentTfIdVectorNorm.get(pageUri) * norm(queryTfIdVectors);
+    		double denominator = this.documentTfIdVectorNorm.get(pageUri) * Math.sqrt(queryTfIdNorm);
     		double relevance = denominator == 0 ? 0.0 : numerator / denominator;
     		return relevance;
     }
-    
-    //  This method computes the returns  to be used in computeRelevance
-    public Double norm(IDictionary<String, Double> tfIdVector) {
-    		double output = 0.0;
-    		for (KVPair<String, Double> pair: tfIdVector) {
-    			double score = pair.getValue();
-    			output += score * score;
-    		}
-    		return Math.sqrt(output);
-    }
 }
+
