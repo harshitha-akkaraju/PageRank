@@ -172,11 +172,8 @@ public class TfIdfAnalyzer {
     			numerator += docWordScore * queryWordScore;
     		}
     		double denominator = norm(docTfIdVectors) * norm(queryTfIdVectors);
-    		if (denominator == 0) {
-    			return 0.0;
-    		} else {
-    			return numerator / denominator;
-    		}
+    		double relevance = denominator == 0 ? 0.0 : numerator / denominator;
+    		return relevance;
 	    	// TODO: Replace this with actual, working code.        
 	    	// TODO: The pseudocode we gave you is not very efficient. When implementing,
         // this smethod, you should:
