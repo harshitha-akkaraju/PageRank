@@ -67,11 +67,11 @@ public class TfIdfAnalyzer {
     
     //  Computes the Idf scores for the words
     public IDictionary<String, Double> computeIdfScores(ISet<Webpage> pages) {
-		IDictionary<String, Double> idfScores = computeIdfCounts(pages); // Compute the counts first
-		for (KVPair<String, Double> idfPair : idfScores) {
+		IDictionary<String, Double> idfScoresDict = computeIdfCounts(pages); // Compute the counts first
+		for (KVPair<String, Double> idfPair : idfScoresDict) {
 			idfScores.put(idfPair.getKey(), Math.log(pages.size() / idfPair.getValue()));
 		}
-		return idfScores;
+		return idfScoresDict;
     }
 
     /**
@@ -102,8 +102,7 @@ public class TfIdfAnalyzer {
     			tfScores.put(tfPair.getKey(), (Double) tfPair.getValue() / words.size());
     		}
     		return tfScores;
-    }
-    
+    }    
 
     /**
      * Computes the TfIdf vectors for all documents to use in the TdIdf vector
