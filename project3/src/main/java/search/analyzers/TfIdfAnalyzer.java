@@ -26,49 +26,29 @@ public class TfIdfAnalyzer {
     private IDictionary<String, Double> idfScores;	//  ln (total num docs/num docs containing term)
     
     // This field must contain the TF-IDF vector for each webpage you were given
-    // in the constructor.
-    //
-    // We will use each webpage's page URI as a unique key.
+    // in the constructor. We will use each webpage's page URI as a unique key.
     private IDictionary<URI, IDictionary<String, Double>> documentTfIdfVectors;
-
-    // Feel free to add extra fields and helper methods.
     
     // Field for storing TF scores for every single word in all the documents
-    private IDictionary<String,Double> tfScores;
     IDictionary<URI, Double> documentTfIdVectorNorm;
     
+    // Initiates object with precomputed values
     public TfIdfAnalyzer(ISet<Webpage> webpages) {
-        // Implementation note: We have commented these method calls out so your
-        // search engine doesn't immediately crash when you try running it for the
-        // first time.
-        //
-        // You should uncomment these lines when you're ready to begin working
-        // on this class.
-
         this.idfScores = this.computeIdfScores(webpages);
         this.documentTfIdVectorNorm = new ChainedHashDictionary<URI, Double>();
         this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages);
     }
-
-    // Note: this method, strictly speaking, doesn't need to exist. However,
-    // we've included it so we can add some unit tests to help verify that your
-    // constructor correctly initializes your fields.
+    
     public IDictionary<URI, IDictionary<String, Double>> getDocumentTfIdfVectors() {
         return this.documentTfIdfVectors;
     }
-
-    // Note: these private methods are suggestions or hints on how to structure your
-    // code. However, since they're private, you're not obligated to implement exactly
-    // these methods: Feel free to change or modify these methods if you want. The
-    // important thing is that your 'computeRelevance' method ultimately returns the
-    // correct answer in an efficient manner.
     
     /**
      * This method should return a dictionary mapping every single unique word found
      * in any documents to their IDF score.
      */
     
-    // need to get num docs and number of documents that have that word
+    // Counts the number of documents each word is found in
     private IDictionary<String, Double> computeIdfCounts(ISet<Webpage> pages) {
     		IDictionary<String, Double> idfCounts = new ChainedHashDictionary<String, Double>();
 		URI lastSeen = null;
@@ -86,13 +66,13 @@ public class TfIdfAnalyzer {
 		return idfCounts;
     }
     
+    //  Computes the Idf scores for each word
     public IDictionary<String, Double> computeIdfScores(ISet<Webpage> pages) {
-     	//	ln (total num docs/num docs containing term)    	
-		IDictionary<String, Double> idfScores = computeIdfCounts(pages); // Compute the counts first
-		for (KVPair<String, Double> idfPair : idfScores) {
-			idfScores.put(idfPair.getKey(), Math.log(pages.size() / idfPair.getValue()));
+		IDictionary<String, Double> idfScoresDict = computeIdfCounts(pages); // Compute the counts first
+		for (KVPair<String, Double> idfPair : idfScoresDict) {
+			idfScoresDict.put(idfPair.getKey(), Math.log(pages.size() / idfPair.getValue()));
 		}
-		return idfScores;
+		return idfScoresDict;
     }
 
     /**
@@ -130,11 +110,9 @@ public class TfIdfAnalyzer {
     
 
     /**
-     * See spec for more details on what this method should do.
+     * Computes all document Tf/Idf vectors
      */
     private IDictionary<URI, IDictionary<String, Double>> computeAllDocumentTfIdfVectors(ISet<Webpage> pages) {
-        // Hint: this method should use the idfScores field and
-        // call the computeTfScores(...) method.
     		IDictionary<URI, IDictionary<String, Double>> result = 
     				new ChainedHashDictionary<URI, IDictionary<String, Double>>();
     		for (Webpage pg : pages) {
@@ -161,14 +139,6 @@ public class TfIdfAnalyzer {
      *               webpages given to the constructor.
      */
     public Double computeRelevance(IList<String> query, URI pageUri) {
-	    	// TODO: Replace this with actual, working code.        
-	    	// TODO: The pseudocode we gave you is not very efficient. When implementing,
-	    // this smethod, you should:
-	    //
-	    // 1. Figure out what information can be precomputed in your constructor.
-	    //    Add a third field containing that information.
-	    //
-	    // 2. See if you can combine or merge one or more loops.
     		IDictionary<String, Double> docTfIdVectors = this.documentTfIdfVectors.get(pageUri);
     		IDictionary<String, Double> queryTfScores = computeTfScores(query);
     		IDictionary<String, Double> queryTfIdVectors = new ChainedHashDictionary<String, Double>();
@@ -189,3 +159,4 @@ public class TfIdfAnalyzer {
     		return relevance;
     }
 }
+

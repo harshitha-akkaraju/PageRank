@@ -116,7 +116,8 @@ public class TestArrayHeapFunctionality extends BaseTest {
         IPriorityQueue<Integer> heap = this.makeInstance();
         try {
         	heap.peekMin();
-        } catch (EmptyContainerException e) {        	
+        } catch (EmptyContainerException e) {  
+        	System.out.println("Cannot call peekMin(), the heap is empty");
         }
     }
     
@@ -127,6 +128,7 @@ public class TestArrayHeapFunctionality extends BaseTest {
         try {
         		heap.size();
         } catch (EmptyContainerException e) {
+        	System.out.println("The heap is empty");
         }
     }
         
@@ -172,7 +174,8 @@ public class TestArrayHeapFunctionality extends BaseTest {
 		assertTrue(matches(expected, actual));			
 		try {
 			heap.insert(null);
-		} catch (IllegalArgumentException e) {				
+		} catch (IllegalArgumentException e) {		
+			System.out.println("Cannot insert null");
 		}
     }
     
