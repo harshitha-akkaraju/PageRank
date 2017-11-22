@@ -116,7 +116,8 @@ public class TestArrayHeapFunctionality extends BaseTest {
         IPriorityQueue<Integer> heap = this.makeInstance();
         try {
         	heap.peekMin();
-        } catch (EmptyContainerException e) {        	
+        } catch (EmptyContainerException e) {  
+        	//  do nothing
         }
     }
     
@@ -127,6 +128,7 @@ public class TestArrayHeapFunctionality extends BaseTest {
         try {
         		heap.size();
         } catch (EmptyContainerException e) {
+        	//  do nothing
         }
     }
         
@@ -172,7 +174,8 @@ public class TestArrayHeapFunctionality extends BaseTest {
 		assertTrue(matches(expected, actual));			
 		try {
 			heap.insert(null);
-		} catch (IllegalArgumentException e) {				
+		} catch (IllegalArgumentException e) {		
+			//  do nothing
 		}
     }
     

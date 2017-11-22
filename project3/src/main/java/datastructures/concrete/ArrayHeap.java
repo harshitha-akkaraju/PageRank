@@ -25,7 +25,7 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     private T[] heap;
     
     // Feel free to add more fields and constants.
-    private int size;
+    private int dictSize;
     
     public ArrayHeap() {
     	this.heap = makeArrayOfT(10);
@@ -58,14 +58,14 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
      */
     @Override
     public T removeMin() {
-    	if (this.size == 0) {
+    	if (this.dictSize == 0) {
     		throw new EmptyContainerException();
 		}
    		T min = this.heap[0];
-   		this.heap[0] = this.heap[this.size - 1];
-        this.size--;
+   		this.heap[0] = this.heap[this.dictSize - 1];
+        this.dictSize--;
         percolateDown(0);
-        if (this.size != 0 && this.heap.length / this.size <= 0.25) {
+        if (this.dictSize != 0 && this.heap.length / this.dictSize <= 0.25) {
        		downSize();
         }
         return min;
@@ -81,7 +81,7 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
      */
     @Override
     public T peekMin() {
-    	if (this.size == 0) {
+    	if (this.dictSize == 0) {
    			throw new EmptyContainerException();
    		}
    		return this.heap[0];
@@ -97,12 +97,12 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     	if (item == null) {
     		throw new IllegalArgumentException();
    		}
-   		if (this.size == this.heap.length) {
+   		if (this.dictSize == this.heap.length) {
    			ensureCapacity();
    		}
-   		this.heap[this.size] = item;
-    	percolateUp(this.size);
-    	this.size++;
+   		this.heap[this.dictSize] = item;
+    	percolateUp(this.dictSize);
+    	this.dictSize++;
     }
     
     /**
@@ -110,7 +110,7 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
      */
     @Override
     public int size() {
-        return this.size;
+        return this.dictSize;
     }
     
     /**
@@ -138,7 +138,7 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     	int minIndex = index;
    		T minElement = this.heap[index];
    		int count = 0;
-		while (childIndex < this.size && count < NUM_CHILDREN) {
+		while (childIndex < this.dictSize && count < NUM_CHILDREN) {
 			childIndex++;
 			count++;
 			if (minElement.compareTo(this.heap[childIndex]) > 0) {
@@ -159,9 +159,9 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
      * If 'heap' is full, ensureCapacity doubles the size of heap so it can hold at least this.size elements.
      */
     private void ensureCapacity() {
-    	int newSize = this.size * 2;
+    	int newSize = this.dictSize * 2;
    		T[] temp = makeArrayOfT(newSize);
-   		for (int i = 0; i < this.size; i++) {
+   		for (int i = 0; i < this.dictSize; i++) {
    			temp[i] = this.heap[i];
    		}
    		this.heap = temp;
@@ -171,7 +171,7 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
      * If the heap is less than 25% full, the heap size is reduced by half
      */
     private void downSize() {
-		T [] temp = makeArrayOfT(this.heap.length / 2);
+		T[] temp = makeArrayOfT(this.heap.length / 2);
 		for (int i = 0; i < this.heap.length; i++) {
 			temp[i] = this.heap[i];
 		}
