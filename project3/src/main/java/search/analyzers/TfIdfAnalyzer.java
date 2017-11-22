@@ -10,11 +10,9 @@ import datastructures.concrete.dictionaries.ChainedHashDictionary;
 import datastructures.interfaces.IDictionary;
 import datastructures.interfaces.IList;
 import datastructures.interfaces.ISet;
-import misc.exceptions.NotYetImplementedException;
 import search.models.Webpage;
 
 import java.net.URI;
-import java.util.Iterator; // TODO: Check if we are allowed to import iterator
 
 /**
  * This class is responsible for computing how "relevant" any given document is
@@ -174,9 +172,11 @@ public class TfIdfAnalyzer {
     		IDictionary<String, Double> docTfIdVectors = this.documentTfIdfVectors.get(pageUri);
     		IDictionary<String, Double> queryTfScores = computeTfScores(query);
     		IDictionary<String, Double> queryTfIdVectors = new ChainedHashDictionary<String, Double>();
+    		double queryTfIdNorm = 0.0;
     		for (KVPair<String, Double> tfScore: queryTfScores) {
     			double vector = this.idfScores.get((String) tfScore.getKey()) * (Double) tfScore.getValue();
     			queryTfIdVectors.put((String) tfScore.getKey(), vector);
+    			queryTfIdNorm += vector * vector;
     		}
     		double numerator = 0.0;
     		for (String word: query) {
@@ -184,17 +184,8 @@ public class TfIdfAnalyzer {
     			double queryWordScore = queryTfIdVectors.get(word);
     			numerator += docWordScore * queryWordScore;
     		}
-    		double denominator = this.documentTfIdVectorNorm.get(pageUri) * norm(queryTfIdVectors);
+    		double denominator = this.documentTfIdVectorNorm.get(pageUri) * Math.sqrt(queryTfIdNorm);
     		double relevance = denominator == 0 ? 0.0 : numerator / denominator;
     		return relevance;
-    }
-    
-    public Double norm(IDictionary<String, Double> tfIdVector) {
-    		double output = 0.0;
-    		for (KVPair<String, Double> pair: tfIdVector) {
-    			double score = pair.getValue();
-    			output += score * score;
-    		}
-    		return Math.sqrt(output);
     }
 }
