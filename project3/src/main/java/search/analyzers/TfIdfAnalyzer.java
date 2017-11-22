@@ -21,33 +21,34 @@ import java.net.URI;
  * See the spec for more details.
  */
 public class TfIdfAnalyzer {
-    // This field stores IDF score for every single word in all the documents.
-	//  ln (total num docs/num docs containing term)
-    private IDictionary<String, Double> idfScores;	
+    // This field must contain the IDF score for every single word in all
+    // the documents.
+    private IDictionary<String, Double> idfScores;	//  ln (total num docs/num docs containing term)
     
-    // This field contains the TF-IDF vector for each webpage given
+    // This field must contain the TF-IDF vector for each webpage you were given
     // in the constructor. We will use each webpage's page URI as a unique key.
     private IDictionary<URI, IDictionary<String, Double>> documentTfIdfVectors;
     
     // Field for storing TF scores for every single word in all the documents
     IDictionary<URI, Double> documentTfIdVectorNorm;
     
-    //  Constructor creates object and precomputes TfIdf scores/vectors
+    // Initiates object with precomputed values
     public TfIdfAnalyzer(ISet<Webpage> webpages) {
         this.idfScores = this.computeIdfScores(webpages);
         this.documentTfIdVectorNorm = new ChainedHashDictionary<URI, Double>();
         this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages);
     }
-
+    
     public IDictionary<URI, IDictionary<String, Double>> getDocumentTfIdfVectors() {
         return this.documentTfIdfVectors;
     }
     
     /**
-     * Return a dictionary mapping every single unique word found in any documents to their IDF score.
-     */  
+     * This method should return a dictionary mapping every single unique word found
+     * in any documents to their IDF score.
+     */
     
-    //  Counts the number of unique words
+    // Counts the number of documents each word is found in
     private IDictionary<String, Double> computeIdfCounts(ISet<Webpage> pages) {
     		IDictionary<String, Double> idfCounts = new ChainedHashDictionary<String, Double>();
 		URI lastSeen = null;
@@ -65,11 +66,11 @@ public class TfIdfAnalyzer {
 		return idfCounts;
     }
     
-    //  Computes the Idf scores for the words
+    //  Computes the Idf scores for each word
     public IDictionary<String, Double> computeIdfScores(ISet<Webpage> pages) {
 		IDictionary<String, Double> idfScoresDict = computeIdfCounts(pages); // Compute the counts first
 		for (KVPair<String, Double> idfPair : idfScoresDict) {
-			idfScores.put(idfPair.getKey(), Math.log(pages.size() / idfPair.getValue()));
+			idfScoresDict.put(idfPair.getKey(), Math.log(pages.size() / idfPair.getValue()));
 		}
 		return idfScoresDict;
     }
@@ -80,8 +81,6 @@ public class TfIdfAnalyzer {
      *
      * We are treating the list of words as if it were a document.
      */
-    
-    //  Counts the number of times words are found in a document
     private IDictionary<String, Double> computeTfCounts(IList<String> words) {
     		IDictionary<String, Double> tfCounts = new ChainedHashDictionary<String, Double>();
     		for (String word : words) {
@@ -95,17 +94,23 @@ public class TfIdfAnalyzer {
     		return tfCounts;
     }
     
-    //  Computes the Tf scores for the words
+    /**
+     * Returns a dictionary mapping every unique word found in the given list
+     * to their term frequency (TF) scores.
+     *
+     * We are treating the list of words as if it were a document.
+     */
     private IDictionary<String, Double> computeTfScores(IList<String> words) {
     		IDictionary<String, Double> tfScores = computeTfCounts(words); // Compute the counts first
     		for (KVPair<String, Double> tfPair : tfScores) {
     			tfScores.put(tfPair.getKey(), (Double) tfPair.getValue() / words.size());
     		}
     		return tfScores;
-    }    
+    }
+    
 
     /**
-     * Computes the TfIdf vectors for all documents to use in the TdIdf vector
+     * Computes all document Tf/Idf vectors
      */
     private IDictionary<URI, IDictionary<String, Double>> computeAllDocumentTfIdfVectors(ISet<Webpage> pages) {
     		IDictionary<URI, IDictionary<String, Double>> result = 
@@ -116,8 +121,7 @@ public class TfIdfAnalyzer {
     			IDictionary<String, Double> tfScores = computeTfScores(pg.getWords());
     			double output = 0.0;
     			for (KVPair<String, Double> tfScore: tfScores) {
-    				double vector = this.idfScores.get(
-    						(String) tfScore.getKey()) * (Double) tfScore.getValue();
+    				double vector = this.idfScores.get((String) tfScore.getKey()) * (Double) tfScore.getValue();
     				pgTfIdfScores.put((String) tfScore.getKey(), vector);
     				output += vector * vector;
     			}
