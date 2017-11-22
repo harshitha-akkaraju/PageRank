@@ -116,7 +116,8 @@ public class TfIdfAnalyzer {
     			IDictionary<String, Double> tfScores = computeTfScores(pg.getWords());
     			double output = 0.0;
     			for (KVPair<String, Double> tfScore: tfScores) {
-    				double vector = this.idfScores.get((String) tfScore.getKey()) * (Double) tfScore.getValue();
+    				double vector = this.idfScores.get(
+    						(String) tfScore.getKey()) * (Double) tfScore.getValue();
     				pgTfIdfScores.put((String) tfScore.getKey(), vector);
     				output += vector * vector;
     			}
