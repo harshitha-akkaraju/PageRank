@@ -10,6 +10,8 @@ import misc.BaseTest;
 import datastructures.concrete.DoubleLinkedList;
 import datastructures.interfaces.IList;
 import misc.Searcher;
+import misc.exceptions.EmptyContainerException;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -104,7 +106,7 @@ public class TestTopKSortFunctionality extends BaseTest {
     //  Test Doubles
     @Test(timeout=SECOND)
     public void testDoubles() {
-    	IList<Double> list = new DoubleLinkedList<>();
+    		IList<Double> list = new DoubleLinkedList<>();
         for (int i = 0; i < 20; i++) {
             list.add(i * 1.0);
         }
@@ -113,5 +115,19 @@ public class TestTopKSortFunctionality extends BaseTest {
         for (int i = 0; i < top.size(); i++) {
             assertEquals(15 + i * 1.0, top.get(i));
         }
-    }        
-}
+    }
+    
+    @Test(timeout=SECOND)
+    public void testSearcherException() {
+	    	IList<Integer> list = new DoubleLinkedList<>();
+        for (int i = 5; i > 0; i--) {
+            list.add(i);
+        }
+        try {
+        		Searcher.topKSort(-1, list);
+        } catch (IllegalArgumentException e) {  
+        		System.out.println("k cannot be negative");
+        }
+        
+    }
+ }
