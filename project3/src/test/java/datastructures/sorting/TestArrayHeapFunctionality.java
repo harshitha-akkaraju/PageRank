@@ -117,7 +117,7 @@ public class TestArrayHeapFunctionality extends BaseTest {
         try {
         	heap.peekMin();
         } catch (EmptyContainerException e) {  
-        	//  do nothing
+        	System.out.println("Cannot call peekMin(), the heap is empty");
         }
     }
     
@@ -128,7 +128,7 @@ public class TestArrayHeapFunctionality extends BaseTest {
         try {
         		heap.size();
         } catch (EmptyContainerException e) {
-        	//  do nothing
+        	System.out.println("The heap is empty");
         }
     }
         
@@ -175,7 +175,7 @@ public class TestArrayHeapFunctionality extends BaseTest {
 		try {
 			heap.insert(null);
 		} catch (IllegalArgumentException e) {		
-			//  do nothing
+			System.out.println("Cannot insert null");
 		}
     }
     
