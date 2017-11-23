@@ -32,7 +32,7 @@ public class TestSortingStress extends BaseTest {
 	protected <T extends Comparable<T>> IPriorityQueue<T> makeInstance() {
 		return new ArrayHeap<>();
 	}
-	    
+
 	//  Make basic heap
 	protected IPriorityQueue<Integer> makeBasicHeap() {
 		IPriorityQueue<Integer> heap = this.makeInstance();
@@ -45,59 +45,59 @@ public class TestSortingStress extends BaseTest {
 		heap.insert(9);
 		heap.insert(2);
 		return heap;
-}
-	
-    // ARRAYHEAP STRESS TESTS
-    // Test worst case for building a heap (when elements are in reverse sorted order)
-    @Test(timeout=10*SECOND)
-    public void testBuildHeapWorstCase() {
-	    	IPriorityQueue<Integer> heap = this.makeInstance();
-	    	int[] expected = new int[10000000];
-	    	for (int i = 10000000 - 1; i >= 0; i--) {
-	    		heap.insert(i);
-	    		expected[i] = i;
-	    	}
-	    	Arrays.sort(expected);
-	    	for (int i = 0; i < expected.length; i++) {
-	    		assertTrue(expected[i] == heap.removeMin());
-	    	}
-    }
-    
-    //  Insert and remove a large amount of data and compare with expected out 
-    @Test(timeout=10*SECOND)
-    public void heapStressTest() {
-        IPriorityQueue<Integer> heap = this.makeInstance();
-        int[] expected = new int[1000000];
-        for (int i = 0; i < 1000000; i++) {
-	        heap.insert(i);
-	        expected[i] = i;
-        }
-        Arrays.sort(expected);
-        for (int i = 0; i < 1000000; i++) {
-        	int heapMin = heap.removeMin();
-        	assertTrue(heapMin == expected[i]);
-        }
-    }
-    
-    //  SORTING STRESS TEST
-    //  Test ordering randomly generated integers
-    @Test(timeout=10*SECOND)
-    public void randomIntStressTest() {
-	    	Random r = new Random();
-	    	List<Integer> expected = new LinkedList<Integer>();
-	    	IList<Integer> actual = new DoubleLinkedList<Integer>();    	
-	    	for (int i = 0; i < 100000; i++) {
-	    		int rand = r.nextInt();
-	    		expected.add(rand);
-	    		actual.add(rand);
-	    	}
-    	
-	    	Collections.sort(expected); 
-	    	actual = Searcher.topKSort(100000, actual); 	
-	    	Iterator<Integer> itrE = expected.iterator();
-	    	Iterator<Integer> itrA = actual.iterator();
-	    	while (itrE.hasNext()) {
-	    		assertEquals(itrE.next(), itrA.next());
-	    	}
-    }
+	}
+
+	// ARRAYHEAP STRESS TESTS
+	// Test worst case for building a heap (when elements are in reverse sorted order)
+	@Test(timeout=10*SECOND)
+	public void testBuildHeapWorstCase() {
+		IPriorityQueue<Integer> heap = this.makeInstance();
+		int[] expected = new int[100000];
+		for (int i = 100000 - 1; i >= 0; i--) {
+			heap.insert(i);
+			expected[i] = i;
+		}
+		Arrays.sort(expected);
+		for (int i = 0; i < expected.length; i++) {
+			assertTrue(expected[i] == heap.removeMin());
+		}
+	}
+
+	//  Insert and remove a large amount of data and compare with expected out 
+	@Test(timeout=10*SECOND)
+	public void heapStressTest() {
+		IPriorityQueue<Integer> heap = this.makeInstance();
+		int[] expected = new int[1000000];
+		for (int i = 0; i < 1000000; i++) {
+			heap.insert(i);
+			expected[i] = i;
+		}
+		Arrays.sort(expected);
+		for (int i = 0; i < 1000000; i++) {
+			int heapMin = heap.removeMin();
+			assertTrue(heapMin == expected[i]);
+		}
+	}
+
+	//  SORTING STRESS TEST
+	//  Test ordering randomly generated integers
+	@Test(timeout=10*SECOND)
+	public void randomIntStressTest() {
+		Random r = new Random();
+		List<Integer> expected = new LinkedList<Integer>();
+		IList<Integer> actual = new DoubleLinkedList<Integer>();    	
+		for (int i = 0; i < 100000; i++) {
+			int rand = r.nextInt();
+			expected.add(rand);
+			actual.add(rand);
+		}
+
+		Collections.sort(expected); 
+		actual = Searcher.topKSort(100000, actual); 	
+		Iterator<Integer> itrE = expected.iterator();
+		Iterator<Integer> itrA = actual.iterator();
+		while (itrE.hasNext()) {
+			assertEquals(itrE.next(), itrA.next());
+		}
+	}
 }
