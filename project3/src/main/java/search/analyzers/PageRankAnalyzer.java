@@ -1,6 +1,8 @@
 package search.analyzers;
 
 import datastructures.interfaces.IDictionary;
+import datastructures.concrete.dictionaries.ChainedHashDictionary;
+import datastructures.concrete.ChainedHashSet;
 import datastructures.interfaces.ISet;
 import misc.exceptions.NotYetImplementedException;
 import search.models.Webpage;
@@ -56,8 +58,25 @@ public class PageRankAnalyzer {
      * links from your graph: we want the final graph we build to be
      * entirely "self-contained".
      */
-    private IDictionary<URI, ISet<URI>> makeGraph(ISet<Webpage> webpages) {
-        throw new NotYetImplementedException();
+    private IDictionary<URI, ISet<URI>> makeGraph(ISet<Webpage> webpages) {   	
+    	IDictionary<URI, ISet<URI>> graph = new ChainedHashDictionary<URI, ISet<URI>>();
+    	
+    	// makes sure another link contains link, no random links
+    	ISet<URI> containedPages = new ChainedHashSet<URI>();
+    	for (each )
+    	
+    	for (Webpage pg : webpages) {
+    		//  if conditions: no repeat keys, outgoing lines to same place only single edge should be added
+    		//  			no self linking
+    		//				remove links that linked to by every other webpage
+    		if (!graph.containsKey(pg.getUri())) {
+    			graph.add(pg.getUri(), webpages);
+    		}
+    	}
+    	  
+    	  return graph;
+    	 
+        //throw new NotYetImplementedException();
     }
 
     /**
