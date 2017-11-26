@@ -1,8 +1,14 @@
 package search.analyzers;
 
+import datastructures.concrete.ChainedHashSet;
+import datastructures.concrete.dictionaries.ChainedHashDictionary;
 import datastructures.interfaces.IDictionary;
+<<<<<<< HEAD
 import datastructures.concrete.dictionaries.ChainedHashDictionary;
 import datastructures.concrete.ChainedHashSet;
+=======
+import datastructures.interfaces.IList;
+>>>>>>> c9f067a65f17e7b51e570ec9fb30de49cc11a6d2
 import datastructures.interfaces.ISet;
 import misc.exceptions.NotYetImplementedException;
 import search.models.Webpage;
@@ -58,9 +64,24 @@ public class PageRankAnalyzer {
      * links from your graph: we want the final graph we build to be
      * entirely "self-contained".
      */
-    private IDictionary<URI, ISet<URI>> makeGraph(ISet<Webpage> webpages) {   	
-    	 
-        throw new NotYetImplementedException();
+
+    private IDictionary<URI, ISet<URI>> makeGraph(ISet<Webpage> webpages) {
+    		IDictionary<URI, ISet<URI>> result = new ChainedHashDictionary<URI, ISet<URI>>();
+    		for (Webpage page: webpages) {
+    			result.put(page.getUri(), null);
+    		}
+    		for (Webpage page: webpages) {
+    			URI uri = page.getUri();
+    			IList<URI> links = page.getLinks();
+    			ISet<URI> edges = new ChainedHashSet<URI>();
+    			for (URI link: links) {
+    				if (result.containsKey(link) && !uri.equals(link)) {
+    					edges.add(link);
+    				}
+    			}
+    			result.put(uri, edges);
+    		}
+        return result;
     }
 
     /**
