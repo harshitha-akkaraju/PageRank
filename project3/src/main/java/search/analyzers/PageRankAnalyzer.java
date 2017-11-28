@@ -53,8 +53,26 @@ public class PageRankAnalyzer {
 		// Note: we don't store the graph as a field: once we've computed the
 		// page ranks, we no longer need it!
 	}
+	
+    private IDictionary<URI, ISet<URI>> makeGraph(ISet<Webpage> webpages) {
+		IDictionary<URI, ISet<URI>> result = new ChainedHashDictionary<URI, ISet<URI>>();
+		for (Webpage page: webpages) {
+			result.put(page.getUri(), null);
+		}
+		for (Webpage page: webpages) {
+			URI uri = page.getUri();
+			IList<URI> links = page.getLinks();
+			ISet<URI> edges = new ChainedHashSet<URI>();
+			for (URI link: links) {
+				if (result.containsKey(link) && !uri.equals(link)) {
+					edges.add(link);
+				}
+			}
+			result.put(uri, edges);
+		}
+    return result;
+}
 
-<<<<<<< HEAD
 
 
 	/**
