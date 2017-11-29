@@ -98,13 +98,13 @@ public class PageRankAnalyzer {
 		// Step 1: The initialize step should go here
 		IDictionary<URI, Double> oldPageRanks = new ChainedHashDictionary<URI, Double>();
 		IDictionary<URI, Double> newPageRanks = new ChainedHashDictionary<URI, Double>();
-		// IDictionary<URI, Double> result = new ChainedHashDictionary<URI, Double>();
+		IDictionary<URI, Double> reset = new ChainedHashDictionary<URI, Double>();
 		for (KVPair<URI, ISet<URI>> page: graph) {
 			oldPageRanks.put(page.getKey(), 1.0 / graph.size());
 			newPageRanks.put(page.getKey(), 0.0);
+			reset.put(page.getKey(), 0.0);
 		}
 		for (int i = 0; i < limit; i++) {
-			// Step 2: The update step should go here
 			for (KVPair<URI, ISet<URI>> vertex: graph) {
 				double oldPageRank = oldPageRanks.get(vertex.getKey());
 				ISet<URI> edges = vertex.getValue();
@@ -123,7 +123,6 @@ public class PageRankAnalyzer {
 				}
 				double change = (1 - decay) / graph.size();
 				newPageRanks.put(vertex.getKey(), newPageRanks.get(vertex.getKey()) + change);
-				// result = newPageRanks;
 			}
 			boolean converge = true;
 			for(KVPair<URI, Double> page: oldPageRanks) {
@@ -139,14 +138,11 @@ public class PageRankAnalyzer {
 			} else {
 				for (KVPair<URI, Double> page: newPageRanks) {
 					oldPageRanks.put(page.getKey(), page.getValue());
-					// newPageRanks.put(page.getKey(), 0.0);
+					newPageRanks.put(page.getKey(), 0.0);
 				}
-				// oldPageRanks = newPageRanks;
 			}
 
 		}
-		// Step 3: the convergence step should go here.
-		// Return early if we've converged.
 		return newPageRanks;
 	}
 
