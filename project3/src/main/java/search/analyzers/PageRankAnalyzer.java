@@ -4,12 +4,7 @@ import datastructures.concrete.ChainedHashSet;
 import datastructures.concrete.KVPair;
 import datastructures.concrete.dictionaries.ChainedHashDictionary;
 import datastructures.interfaces.IDictionary;
-<<<<<<< HEAD
-import datastructures.concrete.dictionaries.ChainedHashDictionary;
-import datastructures.concrete.ChainedHashSet;
-=======
 import datastructures.interfaces.IList;
->>>>>>> c9f067a65f17e7b51e570ec9fb30de49cc11a6d2
 import datastructures.interfaces.ISet;
 import misc.exceptions.NotYetImplementedException;
 import search.models.Webpage;
@@ -72,8 +67,6 @@ public class PageRankAnalyzer {
 		}
     return result;
 }
-
-
 
 	/**
 	 * Computes the page ranks for all webpages in the graph.
