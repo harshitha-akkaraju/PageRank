@@ -98,11 +98,9 @@ public class PageRankAnalyzer {
 		// Step 1: The initialize step should go here
 		IDictionary<URI, Double> oldPageRanks = new ChainedHashDictionary<URI, Double>();
 		IDictionary<URI, Double> newPageRanks = new ChainedHashDictionary<URI, Double>();
-		IDictionary<URI, Double> reset = new ChainedHashDictionary<URI, Double>();
 		for (KVPair<URI, ISet<URI>> page: graph) {
 			oldPageRanks.put(page.getKey(), 1.0 / graph.size());
 			newPageRanks.put(page.getKey(), 0.0);
-			reset.put(page.getKey(), 0.0);
 		}
 		for (int i = 0; i < limit; i++) {
 			for (KVPair<URI, ISet<URI>> vertex: graph) {
