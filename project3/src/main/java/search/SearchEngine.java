@@ -5,6 +5,7 @@ import datastructures.concrete.DoubleLinkedList;
 import datastructures.interfaces.IList;
 import datastructures.interfaces.ISet;
 import misc.Searcher;
+import search.analyzers.EnhancedQueryAnalyzer;
 import search.analyzers.PageRankAnalyzer;
 import search.analyzers.TfIdfAnalyzer;
 import search.misc.exceptions.DataExtractionException;
@@ -25,7 +26,7 @@ public class SearchEngine {
     public static int PAGE_RANK_ITERATION_LIMIT = 200;
 
     private ISet<WebpageSummary> pages;
-    private TfIdfAnalyzer tfIdfAnalyzer;
+    private EnhancedQueryAnalyzer tfIdfAnalyzer;
     private PageRankAnalyzer pageRankAnalyzer;
 
     public SearchEngine(String dataFolderName) {
@@ -38,7 +39,7 @@ public class SearchEngine {
         System.out.println("Done extracting");
 
         start = System.currentTimeMillis();
-        this.tfIdfAnalyzer = new TfIdfAnalyzer(webpages);
+        this.tfIdfAnalyzer = new EnhancedQueryAnalyzer(webpages);
         this.pageRankAnalyzer = new PageRankAnalyzer(
                 webpages,
                 PAGE_RANK_DECAY,
@@ -51,7 +52,6 @@ public class SearchEngine {
     public double computeScore(IList<String> query, URI uri) {
         double tfIdf = this.tfIdfAnalyzer.computeRelevance(query, uri);
         double pageRank = this.pageRankAnalyzer.computePageRank(uri);
-
         if (pageRank <= 0.0) {
             throw new IllegalStateException(String.format(
                     "Page '%s' had a page rank of '%f'; all page ranks should be positive and non-zero.",
