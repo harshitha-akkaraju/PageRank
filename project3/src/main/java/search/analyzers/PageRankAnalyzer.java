@@ -48,8 +48,8 @@ public class PageRankAnalyzer {
 		// Note: we don't store the graph as a field: once we've computed the
 		// page ranks, we no longer need it!
 	}
-	
-    private IDictionary<URI, ISet<URI>> makeGraph(ISet<Webpage> webpages) {
+
+	private IDictionary<URI, ISet<URI>> makeGraph(ISet<Webpage> webpages) {
 		IDictionary<URI, ISet<URI>> result = new ChainedHashDictionary<URI, ISet<URI>>();
 		for (Webpage page: webpages) {
 			result.put(page.getUri(), null);
@@ -65,8 +65,8 @@ public class PageRankAnalyzer {
 			}
 			result.put(uri, edges);
 		}
-    return result;
-}
+		return result;
+	}
 
 	/**
 	 * Computes the page ranks for all webpages in the graph.
@@ -142,7 +142,6 @@ public class PageRankAnalyzer {
 	public double computePageRank(URI pageUri) {
 		// Implementation note: this method should be very simple: just one line!
 		// TODO: Add working code here
-		// System.out.println(this.pageRanks.get(pageUri));
 		return this.pageRanks.get(pageUri);
 	}
 }
