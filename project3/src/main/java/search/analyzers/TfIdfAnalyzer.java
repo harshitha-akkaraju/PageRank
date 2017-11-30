@@ -51,16 +51,19 @@ public class TfIdfAnalyzer {
 	// Counts the number of documents each word is found in
 	private IDictionary<String, Double> computeIdfCounts(ISet<Webpage> pages) {
 		IDictionary<String, Double> idfCounts = new ChainedHashDictionary<String, Double>();
-		URI lastSeen = null;
+		IDictionary<String, URI> lastSeen = new ChainedHashDictionary<String, URI>();
+		// URI lastSeen = null;
 		for (Webpage pg : pages) {
 			IList<String> wordsList = pg.getWords();
 			for (String word: wordsList) {
 				if (!idfCounts.containsKey(word)) {
 					idfCounts.put(word, 1.0);
+					lastSeen.put(word, pg.getUri());
 				} else if (idfCounts.containsKey(word) 
-						&& !pg.getUri().equals(lastSeen)) {
+						&& (lastSeen.containsKey(word) && !pg.getUri().equals(lastSeen.get(word)))) {
 					idfCounts.put(word, idfCounts.get(word) + 1.0);
-					lastSeen = pg.getUri();
+					lastSeen.put(word, pg.getUri());
+					// lastSeen = pg.getUri();
 				}
 			}
 		}
