@@ -130,12 +130,8 @@ public class TfIdfAnalyzer {
 			IDictionary<String, Double> tfScores = computeTfScores(pg.getWords());
 			double output = 0.0;
 			for (KVPair<String, Double> tfPair: tfScores) {
-				double vector = this.idfScores.get((String) tfPair.getKey()) * (Double) tfPair.getValue();
-//				if (this.idfScores.containsKey(tfPair.getKey())) {
-//					vector = 
-//				} else {
-//					vector = 0.0;
-//				}
+				double vector = this.idfScores.get((String) tfPair.getKey()) * 
+						(Double) tfPair.getValue();
 				pgTfIdfScores.put((String) tfPair.getKey(), vector);
 				output += (vector * vector);
 			}
@@ -164,7 +160,12 @@ public class TfIdfAnalyzer {
 			} else {
 				vector = 0.0;
 			}
-			queryTfIdVectors.put(word, vector);
+			// Changed: fixed issue with query with repeated words
+			if (queryTfIdVectors.containsKey(word)) {
+				queryTfIdVectors.put(word, queryTfIdVectors.get(word) + vector);
+			} else {
+				queryTfIdVectors.put(word, vector);
+			}
 			queryTfIdNorm += (vector * vector);
 		}
 		double numerator = 0.0;
