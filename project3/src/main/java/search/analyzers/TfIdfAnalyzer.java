@@ -131,11 +131,6 @@ public class TfIdfAnalyzer {
 			double output = 0.0;
 			for (KVPair<String, Double> tfPair: tfScores) {
 				double vector = this.idfScores.get((String) tfPair.getKey()) * (Double) tfPair.getValue();
-//				if (this.idfScores.containsKey(tfPair.getKey())) {
-//					vector = 
-//				} else {
-//					vector = 0.0;
-//				}
 				pgTfIdfScores.put((String) tfPair.getKey(), vector);
 				output += (vector * vector);
 			}
