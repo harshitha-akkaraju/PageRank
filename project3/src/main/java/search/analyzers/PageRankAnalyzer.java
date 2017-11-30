@@ -48,19 +48,8 @@ public class PageRankAnalyzer {
 		// Note: we don't store the graph as a field: once we've computed the
 		// page ranks, we no longer need it!
 	}
-
-	/**
-	 * This method converts a set of webpages into an unweighted, directed graph,
-	 * in adjacency list form.
-	 *
-	 * You may assume that each webpage can be uniquely identified by its URI.
-	 *
-	 * Note that a webpage may contain links to other webpages that are *not*
-	 * included within set of webpages you were given. You should omit these
-	 * links from your graph: we want the final graph we build to be
-	 * entirely "self-contained".
-	 */
-	private IDictionary<URI, ISet<URI>> makeGraph(ISet<Webpage> webpages) {
+	
+    private IDictionary<URI, ISet<URI>> makeGraph(ISet<Webpage> webpages) {
 		IDictionary<URI, ISet<URI>> result = new ChainedHashDictionary<URI, ISet<URI>>();
 		for (Webpage page: webpages) {
 			result.put(page.getUri(), null);
@@ -76,8 +65,8 @@ public class PageRankAnalyzer {
 			}
 			result.put(uri, edges);
 		}
-		return result;
-	}
+    return result;
+}
 
 	/**
 	 * Computes the page ranks for all webpages in the graph.
