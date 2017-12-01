@@ -26,7 +26,7 @@ public class SearchEngine {
     public static int PAGE_RANK_ITERATION_LIMIT = 200;
 
     private ISet<WebpageSummary> pages;
-    private EnhancedQueryAnalyzer tfIdfAnalyzer;
+    private TfIdfAnalyzer tfIdfAnalyzer;
     private PageRankAnalyzer pageRankAnalyzer;
 
     public SearchEngine(String dataFolderName) {
@@ -39,7 +39,7 @@ public class SearchEngine {
         System.out.println("Done extracting");
 
         start = System.currentTimeMillis();
-        this.tfIdfAnalyzer = new EnhancedQueryAnalyzer(webpages);
+        this.tfIdfAnalyzer = new TfIdfAnalyzer(webpages);
         this.pageRankAnalyzer = new PageRankAnalyzer(
                 webpages,
                 PAGE_RANK_DECAY,

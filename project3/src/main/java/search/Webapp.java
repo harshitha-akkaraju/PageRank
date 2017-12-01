@@ -1,5 +1,6 @@
 package search;
 
+import datastructures.concrete.DoubleLinkedList;
 import datastructures.interfaces.IList;
 import search.models.Result;
 import search.SearchEngine;
@@ -10,6 +11,7 @@ import spark.Response;
 import spark.Service;
 import spark.template.mustache.MustacheTemplateEngine;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,6 +84,14 @@ public class Webapp {
 
 		// Perform core search
 		IList<String> queryTerms = WordTokenizer.extract(query);
+		
+		// Modified Code
+//		String[] terms = query.toLowerCase().split("\\s+");
+//		IList<String> queryTerms = new DoubleLinkedList<String>();
+//		for (String s: terms) {
+//			queryTerms.add(s);
+//		}
+		
 		IList<Result> results = this.engine.getTopKResults(queryTerms, numResults);
 
 		// Render results

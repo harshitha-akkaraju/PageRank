@@ -9,7 +9,7 @@ import search.models.Webpage;
 
 import java.net.URI;
 
-public class EnhancedQueryAnalyzer {
+public class EnhancedQueryAnalyzer{
 	// This field must contain the IDF score for every single word in all
 	// the documents.
 	private IDictionary<String, Double> idfScores;
@@ -40,16 +40,17 @@ public class EnhancedQueryAnalyzer {
 	// Counts the number of documents each word is found in
 	private IDictionary<String, Double> computeIdfCounts(ISet<Webpage> pages, String omit) {
 		IDictionary<String, Double> idfCounts = new ChainedHashDictionary<String, Double>();
-		URI lastSeen = null;
+		IDictionary<String, URI> lastSeen = new ChainedHashDictionary<String, URI>();
 		for (Webpage pg : pages) {
 			IList<String> wordsList = pg.getWords();
 			for (String word: wordsList) {
 				if (!idfCounts.containsKey(word)) {
 					idfCounts.put(word, 1.0);
+					lastSeen.put(word, pg.getUri());
 				} else if (idfCounts.containsKey(word) 
-						&& !pg.getUri().equals(lastSeen)) {
+						&& (lastSeen.containsKey(word) && !pg.getUri().equals(lastSeen.get(word)))) {
 					idfCounts.put(word, idfCounts.get(word) + 1.0);
-					lastSeen = pg.getUri();
+					lastSeen.put(word, pg.getUri());
 				}
 			}
 		}
@@ -143,21 +144,17 @@ public class EnhancedQueryAnalyzer {
 		IDictionary<String, Double> queryTfIdVectors = new ChainedHashDictionary<String, Double>();
 		double queryTfIdNorm = 0.0;
 		for (String word: query) {
-			double vector;
-			if (word.charAt(0) != '-') {
-				if (this.idfScores.containsKey(word)) {
+			// if (word.charAt(0) != '-') {
+				double vector;
+				System.out.println(word);
+				if (this.idfScores.containsKey(word) && word.charAt(0) != '-') {
 					vector = this.idfScores.get(word) * queryTfScores.get(word);
 				} else {
 					vector = 0.0;
 				}
-				// Changed: fixed issue with query with repeated words
-				if (queryTfIdVectors.containsKey(word)) {
-					queryTfIdVectors.put(word, queryTfIdVectors.get(word) + vector);
-				} else {
-					queryTfIdVectors.put(word, vector);
-				}
+				queryTfIdVectors.put(word, vector);
 				queryTfIdNorm += (vector * vector);
-			}
+			// }
 		}
 		double numerator = 0.0;
 		for (String word: query) {
