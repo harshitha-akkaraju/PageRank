@@ -52,7 +52,6 @@ public class TfIdfAnalyzer {
 	private IDictionary<String, Double> computeIdfCounts(ISet<Webpage> pages) {
 		IDictionary<String, Double> idfCounts = new ChainedHashDictionary<String, Double>();
 		IDictionary<String, URI> lastSeen = new ChainedHashDictionary<String, URI>();
-		// URI lastSeen = null;
 		for (Webpage pg : pages) {
 			IList<String> wordsList = pg.getWords();
 			for (String word: wordsList) {
@@ -63,7 +62,6 @@ public class TfIdfAnalyzer {
 						&& (lastSeen.containsKey(word) && !pg.getUri().equals(lastSeen.get(word)))) {
 					idfCounts.put(word, idfCounts.get(word) + 1.0);
 					lastSeen.put(word, pg.getUri());
-					// lastSeen = pg.getUri();
 				}
 			}
 		}
@@ -163,12 +161,7 @@ public class TfIdfAnalyzer {
 			} else {
 				vector = 0.0;
 			}
-			// Changed: fixed issue with query with repeated words
-			if (queryTfIdVectors.containsKey(word)) {
-				queryTfIdVectors.put(word, queryTfIdVectors.get(word) + vector);
-			} else {
-				queryTfIdVectors.put(word, vector);
-			}
+			queryTfIdVectors.put(word, vector);
 			queryTfIdNorm += (vector * vector);
 		}
 		double numerator = 0.0;
