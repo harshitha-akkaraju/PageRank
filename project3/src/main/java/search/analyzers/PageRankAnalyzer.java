@@ -112,7 +112,7 @@ public class PageRankAnalyzer {
 				newPageRanks.put(vertex.getKey(), newPageRanks.get(vertex.getKey()) + change);
 			}
 			boolean converge = true;
-			for(KVPair<URI, Double> page: oldPageRanks) {
+			for (KVPair<URI, Double> page: oldPageRanks) {
 				URI uri = page.getKey();
 				double oldPageRank = page.getValue();
 				double newPageRank = newPageRanks.get(uri);
