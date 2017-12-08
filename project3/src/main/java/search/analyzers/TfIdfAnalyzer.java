@@ -5,6 +5,7 @@
  */
 package search.analyzers;
 
+import datastructures.concrete.ChainedHashSet;
 import datastructures.concrete.KVPair;
 import datastructures.concrete.dictionaries.ChainedHashDictionary;
 import datastructures.interfaces.IDictionary;
@@ -49,39 +50,39 @@ public class TfIdfAnalyzer {
 	 */
 
 	// Counts the number of documents each word is found in
-	private IDictionary<String, Double> computeIdfCounts(ISet<Webpage> pages) {
-		IDictionary<String, Double> idfCounts = new ChainedHashDictionary<String, Double>();
-		IDictionary<String, URI> lastSeen = new ChainedHashDictionary<String, URI>();
-		for (Webpage pg : pages) {
-			IList<String> wordsList = pg.getWords();
-			for (String word: wordsList) {
-				if (!idfCounts.containsKey(word)) {
-					idfCounts.put(word, 1.0);
-					lastSeen.put(word, pg.getUri());
-				} else if (idfCounts.containsKey(word) 
-						&& (lastSeen.containsKey(word) && !pg.getUri().equals(lastSeen.get(word)))) {
-					idfCounts.put(word, idfCounts.get(word) + 1.0);
-					lastSeen.put(word, pg.getUri());
+		private IDictionary<String, Double> computeIdfCounts(ISet<Webpage> pages) {
+			IDictionary<String, Double> idfCounts = new ChainedHashDictionary<String, Double>();
+			IDictionary<String, URI> lastSeen = new ChainedHashDictionary<String, URI>();
+			for (Webpage pg : pages) {
+				IList<String> wordsList = pg.getWords();
+				for (String word: wordsList) {
+					if (!idfCounts.containsKey(word)) {
+						idfCounts.put(word, 1.0);
+						lastSeen.put(word, pg.getUri());
+					} else if (idfCounts.containsKey(word) 
+							&& (lastSeen.containsKey(word) && !pg.getUri().equals(lastSeen.get(word)))) {
+						idfCounts.put(word, idfCounts.get(word) + 1.0);
+						lastSeen.put(word, pg.getUri());
+					}
 				}
 			}
+			return idfCounts;
 		}
-		return idfCounts;
-	}
-
-	//  Computes the Idf scores for each word
-	private IDictionary<String, Double> computeIdfScores(ISet<Webpage> pages) {
-		// Compute the counts first
-		IDictionary<String, Double> idfScoresDict = computeIdfCounts(pages);
-		for (KVPair<String, Double> idfPair : idfScoresDict) {
-			if (idfPair.getValue() > 0) {
-				idfScoresDict.put(idfPair.getKey(), 
-						Math.log(pages.size() / idfPair.getValue()));
-			} else {
-				idfScoresDict.put(idfPair.getKey(), 0.0);
+	
+		//  Computes the Idf scores for each word
+		private IDictionary<String, Double> computeIdfScores(ISet<Webpage> pages) {
+			// Compute the counts first
+			IDictionary<String, Double> idfScoresDict = computeIdfCounts(pages);
+			for (KVPair<String, Double> idfPair : idfScoresDict) {
+				if (idfPair.getValue() > 0) {
+					idfScoresDict.put(idfPair.getKey(), 
+							Math.log(pages.size() / idfPair.getValue()));
+				} else {
+					idfScoresDict.put(idfPair.getKey(), 0.0);
+				}
 			}
+			return idfScoresDict;
 		}
-		return idfScoresDict;
-	}
 
 	/**
 	 * Returns a dictionary mapping every unique word found in the given list

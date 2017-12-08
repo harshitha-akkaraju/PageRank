@@ -84,53 +84,49 @@ public class PageRankAnalyzer {
 			double decay,
 			int limit,
 			double epsilon) {
-		// Step 1: The initialize step should go here
-		IDictionary<URI, Double> oldPageRanks = new ChainedHashDictionary<URI, Double>();
-		IDictionary<URI, Double> newPageRanks = new ChainedHashDictionary<URI, Double>();
+		IDictionary<URI, Double> pgRanks = new ChainedHashDictionary<URI, Double>();
 		for (KVPair<URI, ISet<URI>> page: graph) {
-			oldPageRanks.put(page.getKey(), 1.0 / graph.size());
-			newPageRanks.put(page.getKey(), 0.0);
+			pgRanks.put(page.getKey(), 1.0 / graph.size());
 		}
 		for (int i = 0; i < limit; i++) {
-			for (KVPair<URI, ISet<URI>> vertex: graph) {
-				double oldPageRank = oldPageRanks.get(vertex.getKey());
-				ISet<URI> edges = vertex.getValue();
+			IDictionary<URI, Double> tempPgRanks = new ChainedHashDictionary<URI, Double>();
+			// give each page a new rank of 0.0
+			for (KVPair<URI, ISet<URI>> uri: graph) {
+				tempPgRanks.put(uri.getKey(), 0.0);
+			}
+			// share the node rank with every page it links to
+			for (KVPair<URI, ISet<URI>> node: graph) {
+				ISet<URI> edges = node.getValue();
 				if (edges.size() > 0) {
 					for (URI edge: edges) {
-						double change = (decay * oldPageRank) / edges.size();
-						double newPageRank = newPageRanks.get(edge) + change;
-						newPageRanks.put(edge, newPageRank);
+						double change = (decay * pgRanks.get(node.getKey())) / edges.size();
+						double pgRank = tempPgRanks.get(edge) + change;
+						tempPgRanks.put(edge, pgRank);
 					}
 				} else {
-					for (KVPair<URI, Double> page: newPageRanks) {
-						double change = (decay * oldPageRank) / graph.size();
-						double newPageRank = newPageRanks.get(page.getKey()) + change;
-						newPageRanks.put(page.getKey(), newPageRank);
+					for (KVPair<URI, Double> uri: tempPgRanks) {
+						double change = (decay * pgRanks.get(node.getKey())) / graph.size();
+						double pgRank = tempPgRanks.get(uri.getKey()) + change;
+						tempPgRanks.put(uri.getKey(), pgRank);
 					}
 				}
-				double change = (1 - decay) / graph.size();
-				newPageRanks.put(vertex.getKey(), newPageRanks.get(vertex.getKey()) + change);
 			}
 			boolean converge = true;
-			for (KVPair<URI, Double> page: oldPageRanks) {
+			for (KVPair<URI, Double> page: tempPgRanks) {
 				URI uri = page.getKey();
-				double oldPageRank = page.getValue();
-				double newPageRank = newPageRanks.get(uri);
+				double pgRank = page.getValue() + ((1 - decay) / graph.size());
+				// to make sure that we don't converge when a difference ends up being greater than epsilon
 				if (converge) {
-					converge = Math.abs(oldPageRank - newPageRank) <= epsilon;
+					// compare the difference between the old page rank and the new page rank
+					converge = Math.abs(pgRanks.get(uri) - pgRank) < epsilon;
 				}
+				pgRanks.put(uri, pgRank);
 			}
 			if (converge) {
-				return newPageRanks;
-			} else {
-				for (KVPair<URI, Double> page: newPageRanks) {
-					oldPageRanks.put(page.getKey(), page.getValue());
-					newPageRanks.put(page.getKey(), 0.0);
-				}
-			}
-
+				return pgRanks;
+			}	
 		}
-		return newPageRanks;
+		return pgRanks;
 	}
 
 	/**
