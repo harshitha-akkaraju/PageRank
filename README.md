@@ -27,3 +27,9 @@ However, some words such as 'the' appear in a lot of documents. For these words,
 
 #### Computing Inverse Document Frequency (TF-IDF)
 ![IDF Score Formula](img/IDFScore.jpeg "IDF Score Formula")
+
+### Implementing Cosine Similarity
+This is the logic that determines whether a document is related to a query. We computed the cosine similarity between the document vector and the query vector. We did this by comparing the TF-IDF vector for a query against all the document TF-IDF vectors. Then we computed how similar the query vector is to each document by exploiting properties of the cosine function and the dot product.
+
+### PageRank: Intuition
+PageRank works by ignoring the user's query and instead computing the relative "importance" of a webpage based on what webpages link to it. That is if many webpages link to webpage A, then many users are likely to reach this page. Then we can conclude that webpage A is reputable. Similarly, if webpage A has many visitors and webpage A only links to webpage B, we can assume that many users are going to click on the link to webpage B. Now webpage B will share some of the importance of webpage A.
